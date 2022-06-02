@@ -1,0 +1,344 @@
+<div class="container">
+    <div class="register">
+        <div class="row">
+            <div class="col-md-3 register-left">
+                <h3>Clinica Online</h3>
+                <img src="./../../../assets/registro.png" alt="" class="img-registro" />
+            </div>
+            <div class="col-md-9 register-right">
+                <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home"
+                            aria-selected="true" (click)="setPaciente()">Pacientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile"
+                            aria-selected="false" (click)="setEspecialista()">Especialistas</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div [hidden]="auth">
+                            <h3 class="register-heading">Pacientes</h3>
+                            <form [formGroup]="formulario" class="row register-form">
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Nombre</label>
+                                        <span *ngIf="this.formulario.get('nombre')?.hasError('required')"
+                                            class="text-danger">
+                                            *</span>
+                                        <input type="text" class="form-control" formControlName="nombre" name="nombre"
+                                            placeholder="Nombre" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Apellido</label>
+                                        <span *ngIf="this.formulario.get('apellido')?.hasError('required')"
+                                            class="text-danger">
+                                            *</span>
+                                        <input type="text" class="form-control" formControlName="apellido"
+                                            name="apellido" placeholder="Apellido" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Edad</label>
+                                        <span *ngIf="this.formulario.get('edad')?.hasError('required')"
+                                            class="text-danger">
+                                            *</span>
+                                        <input type="number" class="form-control" formControlName="edad" name="edad"
+                                            placeholder="Edad" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Dni</label>
+                                        <span *ngIf="this.formulario.get('dni')?.hasError('required')"
+                                            class="text-danger">
+                                            *</span>
+                                        <input type="number" class="form-control" formControlName="dni" name="dni"
+                                            placeholder="Dni" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Obra Social</label>
+                                        <span *ngIf="this.formulario.get('obraSocial')?.hasError('required')"
+                                            class="text-danger">
+                                            *</span>
+                                        <input type="text" class="form-control" formControlName="obraSocial"
+                                            name="obraSocial" placeholder="Obra Social" value="" />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Correo electrónico</label>
+                                        <span *ngIf="this.formulario.get('mail')?.hasError('required')"
+                                            class="text-danger">
+                                            *</span>
+                                        <input type="email" type="text" formControlName="mail" name="mail"
+                                            class="form-control" placeholder="Mail *" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Contraseña</label>
+                                        <span *ngIf="this.formulario.get('password')?.hasError('required')"
+                                            class="text-danger">
+                                            *</span>
+                                        <input type="password" class="form-control" formControlName="password"
+                                            name="password" placeholder="Contraseña *" value="" />
+                                    </div>
+                                    <label class="fuente mt-1" for="nombre">Debe adjuntar 2 imagenes</label>
+                                    <div class="form-group mt-2">
+                                        <input type="file" class="form-control" formControlName="foto1"
+                                            (input)="subirArchivo($event)" accept=".jpeg,.jpg,.png,.svg" required>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <input type="file" class="form-control" formControlName="foto2"
+                                            (input)="subirArchivo($event)" accept=".jpeg,.jpg,.png,.svg" required>
+                                    </div>
+                                    <input type="submit" class="btnRegister" value="Registrar"
+                                        (click)="guardarPaciente()" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div [hidden]="!auth">
+                        <h3 class="register-heading">Especialistas</h3>
+                        <form [formGroup]="formularioAux" class="row register-form">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Nombre</label>
+                                    <span *ngIf="this.formulario.get('nombre')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                    <input type="text" class="form-control" formControlName="nombre" name="nombre"
+                                        placeholder="Nombre" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Apellido</label>
+                                    <span *ngIf="this.formulario.get('apellido')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                    <input type="text" class="form-control" formControlName="apellido" name="apellido"
+                                        placeholder="Apellido" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Edad</label>
+                                    <span *ngIf="this.formulario.get('edad')?.hasError('required')" class="text-danger">
+                                        *</span>
+                                    <input type="number" class="form-control" formControlName="edad" name="edad"
+                                        placeholder="Edad" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Dni</label>
+                                    <span *ngIf="this.formulario.get('dni')?.hasError('required')" class="text-danger">
+                                        *</span>
+                                    <input type="number" class="form-control" formControlName="dni" name="dni"
+                                        placeholder="Dni" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Especialidad</label>
+                                    <span *ngIf="this.formulario.get('especialidad')?.hasError('required')"
+                                    class="text-danger">
+                                    *</span>
+                                    <input type="text" class="form-control" formControlName="especialidad" name="especialidad" placeholder="Especialidad" value="" />
+                              
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Correo electrónico</label>
+                                    <span *ngIf="this.formulario.get('mail')?.hasError('required')" class="text-danger">
+                                        *</span>
+                                    <input type="email" type="text" formControlName="mail" name="mail"
+                                        class="form-control" placeholder="Mail *" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Contraseña</label>
+                                    <span *ngIf="this.formulario.get('password')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                    <input type="password" class="form-control" formControlName="password"
+                                        name="password" placeholder="Contraseña *" value="" />
+                                </div>
+                                <label class="fuente mt-1" for="nombre">Debe adjuntar 1 imagen</label>
+                                <div class="form-group mt-2">
+                                    <input type="file" class="form-control" formControlName="foto1" name="foto1"
+                                        (input)="subirArchivo($event)" accept=".jpeg,.jpg,.png,.svg" required>
+                                </div>
+                                <input type="submit" class="btnRegister" value="Registrar"
+                                    (click)="guardarEspecialista()" />
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!--
+    <div class="container">
+    <div class="register">
+        <div class="row">
+            <div class="col-md-3 register-left">
+                <h3>Clinica Online</h3>
+                <img src="./../../../assets/registro.png" alt="" class="img-registro" />
+            </div>
+            <div class="col-md-9 register-right">
+                <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" role="tab" aria-controls="home"
+                            aria-selected="true" (click)="setPaciente()">Pacientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile"
+                            aria-selected="false" (click)="setEspecialista()">Especialistas</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div [hidden]="auth" >
+                            <h3 class="register-heading">Pacientes</h3>
+                            <form [formGroup]="formulario" class="row register-form">
+                                <div class="col-md-6">
+                                   
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Nombre</label>
+                                        <span *ngIf="this.formulario.get('nombre')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                        <input type="text" class="form-control" formControlName="nombre" name="nombre" [(ngModel)]="nombre" placeholder="Nombre" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Apellido</label>
+                                        <span *ngIf="this.formulario.get('apellido')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                        <input type="text" class="form-control" formControlName="apellido" name="apellido" [(ngModel)]="apellido" placeholder="Apellido" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Edad</label>
+                                        <span *ngIf="this.formulario.get('edad')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                        <input type="number" class="form-control" formControlName="edad" name="edad" [(ngModel)]="edad" placeholder="Edad" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Dni</label>
+                                        <span *ngIf="this.formulario.get('dni')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                        <input type="number" class="form-control" formControlName="dni" name="dni" [(ngModel)]="dni" placeholder="Dni" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Obra Social</label>
+                                        <span *ngIf="this.formulario.get('obraSocial')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                        <input type="text" class="form-control" formControlName="obraSocial" name="obraSocial" [(ngModel)]="obraSocial" placeholder="Obra Social" value="" />
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Correo electrónico</label>
+                                        <span *ngIf="this.formulario.get('mail')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                        <input type="email" formControlName="mail" name="mail" [(ngModel)]="mail" class="form-control" placeholder="Mail *" value="" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="fuente" for="nombre">Contraseña</label>
+                                        <span *ngIf="this.formulario.get('password')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                        <input type="password" class="form-control" formControlName="password" name="password" [(ngModel)]="password" placeholder="Contraseña *" value="" />
+                                    </div>
+                                    <label class="fuente mt-1" for="nombre">Debe adjuntar 2 imagenes</label>
+                                    <div class="form-group mt-2">
+                                        <input type="file" class="form-control" [(ngModel)]="foto1" formControlName="foto1"
+                                            (input)="subirArchivo($event)" accept=".jpeg,.jpg,.png,.svg" required> 
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <input type="file" class="form-control" [(ngModel)]="foto2"
+                                            (input)="subirArchivo($event)" accept=".jpeg,.jpg,.png,.svg" required> 
+                                    </div>
+                                    <input type="submit" class="btnRegister" value="Registrar" (click)="guardarPaciente()" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div [hidden]="!auth">
+                        <h3 class="register-heading">Especialistas</h3>
+                        <form [formGroup]="formularioAux" class="row register-form">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Nombre</label>
+                                    <span *ngIf="this.formulario.get('nombre')?.hasError('required')"
+                                    class="text-danger">
+                                    *</span>
+                                    <input type="text" class="form-control" formControlName="nombre" name="nombre" [(ngModel)]="nombre" placeholder="Nombre" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Apellido</label>
+                                    <span *ngIf="this.formulario.get('apellido')?.hasError('required')"
+                                    class="text-danger">
+                                    *</span>
+                                    <input type="text" class="form-control" formControlName="apellido" name="apellido" [(ngModel)]="apellido" placeholder="Apellido" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Edad</label>
+                                    <span *ngIf="this.formulario.get('edad')?.hasError('required')"
+                                    class="text-danger">
+                                    *</span>
+                                    <input type="number" class="form-control" formControlName="edad" name="edad" [(ngModel)]="edad" placeholder="Edad" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Dni</label>
+                                    <span *ngIf="this.formulario.get('dni')?.hasError('required')"
+                                    class="text-danger">
+                                    *</span>
+                                    <input type="number" class="form-control" formControlName="dni" name="dni" [(ngModel)]="dni" placeholder="Dni" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Especialidad</label>
+                                    <span *ngIf="this.formulario.get('obraSocial')?.hasError('required')"
+                                    class="text-danger">
+                                    *</span>
+                                    <input type="text" class="form-control" formControlName="obraSocial" name="obraSocial" [(ngModel)]="obraSocial" placeholder="Obra Social" value="" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Correo electrónico</label>
+                                    <span *ngIf="this.formulario.get('mail')?.hasError('required')"
+                                    class="text-danger">
+                                    *</span>
+                                    <input type="email" formControlName="mail" name="mail" [(ngModel)]="mail" class="form-control" placeholder="Mail *" value="" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Contraseña</label>
+                                    <span *ngIf="this.formulario.get('password')?.hasError('required')"
+                                    class="text-danger">
+                                    *</span>
+                                    <input type="password" class="form-control" formControlName="password" name="password" [(ngModel)]="password" placeholder="Contraseña *" value="" />
+                                </div>
+                                <label class="fuente mt-1" for="nombre">Debe adjuntar 1 imagen</label>
+                                <div class="form-group mt-2">
+                                    <input type="file" class="form-control" [(ngModel)]="foto1"  formControlName="foto1"
+                                        (input)="subirArchivo($event)" accept=".jpeg,.jpg,.png,.svg" required> 
+                                </div>
+                                <input type="submit" class="btnRegister" value="Registrar" (click)="guardarEspecialista()"/>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+-->

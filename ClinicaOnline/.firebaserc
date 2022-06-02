@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "clinicaonline-7159e": {
+      "hosting": {
+        "ClinicaOnline": [
+          "clinicaonline-barraza"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "clinicaonline-7159e"
+  }
+}

@@ -1,0 +1,33 @@
+<div id="container">
+    <div id="box">
+        <table class="table ">
+            <thead>
+                <tr style="background-color:rgb(139, 155, 227);">
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Dni</th>
+                    <th>Edad</th>
+                    <th>Perfil</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pac of listadoPacientes">
+                    <td>{{pac.nombre}}</td>
+                    <td>{{pac.apellido}}</td>
+                    <td>{{pac.dni}}</td>
+                    <td>{{pac.edad}}</td>
+                    <td>Paciente</td>
+                </tr>
+                <tr *ngFor="let esp of listadoEsp">
+                    <td>{{esp.nombre}}</td>
+                    <td>{{esp.apellido}}</td>
+                    <td>{{esp.dni}}</td>
+                    <td>{{esp.edad}}</td>
+                    <td>{{esp.especialidad}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

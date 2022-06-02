@@ -1,0 +1,41 @@
+<div id="contenedor" class="text-center">
+    <div class="d-flex justify-content-center spin" role="status" [hidden]="!load">
+        <img class="" id="spinner" [hidden]="!load" src="./../../../assets/logosalud.gif" alt="ClinicaOnline" routerLink="/home" width="200" height="200">
+     </div>
+    <main class="form-signin">
+        <form [formGroup]="formulario">
+            <img class="mb-4" src="./../../../assets/logo.png" alt="ClinicaOnline" routerLink="/home" width="100" height="100">
+            <h1 class="h3 mb-3 fw-normal">Clinica Online</h1>
+
+            <div class="form-floating">
+       
+                <input type="email" class="form-control" id="floatingInput" placeholder="" [(ngModel)]="email" name="email" formControlName="email" required>
+                <label for="floatingInput">Correo electrónico   <span *ngIf="this.formulario.get('email')?.hasError('required')" class="text-danger">
+                    *</span></label>  
+            </div>
+            <div class="form-floating">
+            
+                <input type="password" class="form-control" id="floatingPassword" placeholder="" [(ngModel)]="password" name="password" formControlName="password" required>
+                <label for="floatingPassword">Contraseña  <span *ngIf="this.formulario.get('password')?.hasError('required')" class="text-danger">
+                    *</span></label>      
+            </div>
+
+            <div class="checkbox mt-2 mb-3">
+                <label>
+                    <button class="btn-acceso btn btn-lg btn-primary m-2" (click)="ingresarPaciente()" >Pac</button>
+                    <button class="btn-acceso btn btn-lg btn-primary m-2" (click)="ingresarEspecialista()" >Esp</button>
+                    <button class="btn-acceso btn btn-lg btn-primary m-2" (click)="ingresarAdmin()" >Adm</button>
+                </label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary btn-ingresar" type="submit" (click)="ingresar()">Iniciar sesión</button>
+            <div class="registro mt-3">
+                    <p class="mt-0  text-muted">¿No tienes una cuenta?</p>
+                    <button class="w-100 btn btn-lg btn-primary btn-success" routerLink="/registro">Crea tu cuenta</button>
+            </div>
+            
+        </form>
+    </main>
+
+
+
+</div>

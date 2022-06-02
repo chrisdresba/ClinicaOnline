@@ -1,0 +1,38 @@
+* {
+    box-sizing: content-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+a,
+button {
+    color: #fff !important;
+    font-size: 1em;
+    font-weight: 600;
+}
+.navbar{
+    background: #283c86;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #45a247, #283c86);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #45a247, #283c86); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+   
+    
+}
+.btnIngresar {
+    background: linear-gradient(to right, #348AC7, #7474BF);
+    color: #fff;
+    border: 1px solid #eee;
+    margin-left: 0.8em;
+    width: 6em;
+    border-radius: 5px;
+}
+
+input{
+    width: 240px;
+}
+
+img{
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}
