@@ -14,6 +14,7 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { FormsModule,  ReactiveFormsModule,} from '@angular/forms';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { ListadoUsuariosComponent } from './components/listado-usuarios/listado-usuarios.component';
+import { AltaAdminComponent } from './components/alta-admin/alta-admin.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ListadoUsuariosComponent } from './components/listado-usuarios/listado-
     HomeComponent,
     NavComponent,
     UsuariosComponent,
-    ListadoUsuariosComponent
+    ListadoUsuariosComponent,
+    AltaAdminComponent
   ],
   imports: [
     BrowserModule,

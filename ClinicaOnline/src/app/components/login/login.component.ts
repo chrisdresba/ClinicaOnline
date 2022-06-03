@@ -21,18 +21,19 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  
+
   public load: boolean;
   formulario: FormGroup;
   public email?: string;
   public password?: string;
 
-  constructor(public router: Router, public afAuth: AngularFireAuth, public fb: FormBuilder,public servUsuario:UsuariosService, public database: FirebaseService) {
+  constructor(public router: Router, public afAuth: AngularFireAuth, public fb: FormBuilder, public servUsuario: UsuariosService, public database: FirebaseService) {
     this.load = false;
     this.formulario = this.fb.group({
       'email': ['', [Validators.required, Validators.email]],
       'password': ['', [Validators.required, Validators.minLength(6)]],
-    })}
+    })
+  }
 
   ngOnInit(): void {
     this.load = false;
@@ -40,20 +41,21 @@ export class LoginComponent implements OnInit {
 
   async ingresar() {
     try {
-
+      this.load = true;
+  
       if (this.validarEmail(this.email!) && this.validarContraseña(this.password!)) {
+
         this.afAuth.signInWithEmailAndPassword(this.email!, this.password!).then(res => {
-          if(this.servUsuario.userAdmin(this.email!)){
-              localStorage.setItem('perfilAdmin','admin');
+          if (this.servUsuario.userAdmin(this.email!)) {
+            localStorage.setItem('perfilAdmin', 'admin');
           }
-          this.load = true;
-          setTimeout(()=>{this.router.navigate(['/home'])},3000)
-       
+            setTimeout(() => { this.router.navigate(['/home']) }, 4000)
+            
         }, err => {
           Swal.fire({
             icon: 'error',
             title: 'Error...',
-            text: 'El usuario o la contraseña son incorrectos!'
+            text: 'Problemas con la conexión!'
           })
         })
       } else {

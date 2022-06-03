@@ -13,7 +13,9 @@ export class UsuariosService {
 
   listado: any[] = [];
   constructor(private firestore: AngularFirestore) {
-
+    this.getAdministradores().subscribe(usuario => {
+      this.listado = usuario;
+    })
   }
 
   getPacientes = (): Observable<any[]> => {
@@ -58,18 +60,12 @@ export class UsuariosService {
   }
 
   userAdmin(mail: string) {
-
-    this.getAdministradores().subscribe(usuario => {
-      this.listado = usuario;
-    })
     for (let i = 0; i < this.listado.length; i++) {
       if (this.listado[i].mail == mail) {
         return true;
-        break;
       }
     }
     return false;
-
   }
 
   async savePaciente(res: Paciente) {

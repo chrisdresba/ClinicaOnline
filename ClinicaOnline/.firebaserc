@@ -1,4 +1,9 @@
 {
+  "projects": {
+    "default": "clinicaonline-7159e",
+    "Clinica Online": "clinicaonline-7159e",
+    "clinicaonline": "clinicaonline-7159e"
+  },
   "targets": {
     "clinicaonline-7159e": {
       "hosting": {
@@ -7,8 +12,5 @@
         ]
       }
     }
-  },
-  "projects": {
-    "default": "clinicaonline-7159e"
   }
 }
