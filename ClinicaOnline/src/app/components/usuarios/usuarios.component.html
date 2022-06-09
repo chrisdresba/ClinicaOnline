@@ -1,12 +1,12 @@
 <div id="contenedor">
-
     <header>
         <div class="container py-2">
-            <div class="p-0 mb-4 rounded-3">
+            <div class="p-0 mb-4 col-md-9 rounded-3">
                 <div class="container-fluid py-3">
                     <div class="container">
                         <h1>Listado de usuarios</h1>
-                        <app-listado-usuarios [listadoPacientes]="listadoPacientes" [listadoEsp]="listadoEsp">
+                        <app-listado-usuarios [listadoPacientes]="listadoPacientes" [listadoEsp]="listadoEsp" 
+                        (especialistaSeleccionado)="tomarEspecialistaParaDetalles($event)">>
                         </app-listado-usuarios>
                     </div>
                 </div>
@@ -17,18 +17,19 @@
       <div class="row align-items-md-stretch">
         <div class="col-md-3">
           <div class="h-100 p-5 text-white bg-dark rounded-3">
-            <h2>Change the background</h2>
-            <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>
-            <button class="btn btn-outline-light" type="button">Example button</button>
+            <h2>Especialista</h2>
+            <p>Nombre: {{nombre}}</p>
+            <p>Apellido: {{apellido}} </p>
+            <p>Dni: {{dni}}</p>
+            <p>Especialidad: {{especialidad}}</p>
+            <br>
+            <img src="{{urlImagen}}" alt="">
+            <br>
+            <br>
+            <button class="w-100 btn btn-outline-success mb-1" *ngIf="!estadoEsp" type="button" (click)="habilitar()">Habilitar</button> <button class="w-100 btn btn-outline-danger wt-3" *ngIf="estadoEsp" type="button" (click)="inhabilitar()">Inhabilitar</button>
           </div>
         </div>
         <div class="col-md-9" id="form-alta">
             <app-alta-admin></app-alta-admin>
       </div>
-
-      <div class="row align-items-md-stretch">
-        <div class="col-md-12">
-            <app-registro id="registro"></app-registro>
-        </div>
-    
 </div>

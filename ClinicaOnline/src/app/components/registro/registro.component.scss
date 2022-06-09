@@ -1,11 +1,40 @@
 html,
 body {
   height: 100%;
+  box-sizing: border-box;
+  display: flex;
 }
 
+#container{
+    width: 100%;
+    height: 100%;
+    background: #283c86;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #45a247, #283c86);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #45a247, #283c86); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#box{
+    width: 100%;
+    float: left;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+    margin-top: 2em;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+.img-usuarios{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 2em;
+}
 .register{
     background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-    margin-top: 2%;
+    margin-top: 0%;
     padding: 3%;
     border-radius: 15px;
 }
@@ -39,7 +68,7 @@ body {
     margin-top: -15%;
 }
 .register .register-form{
-    padding: 6%;
+    padding: 4%;
     margin-top: 10%;
 }
 .btnRegister{
@@ -59,7 +88,8 @@ body {
     border: none;
     background: #0062cc;
     border-radius: 1.5rem;
-    width: 28%;
+    width: 10%;
+    margin-right: 2em;
     float: right;
 }
 .register .nav-tabs .nav-link{
@@ -83,7 +113,7 @@ body {
 .register-heading{
     text-align: center;
     margin-top: 8%;
-    margin-bottom: -15%;
+    margin-bottom: -10%;
     color: #495057;
 }
 

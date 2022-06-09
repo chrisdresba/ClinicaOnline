@@ -12,9 +12,21 @@ import { Paciente } from '../class/paciente';
 export class UsuariosService {
 
   listado: any[] = [];
+
+  listadoPacientes : any[] = [];
+  listadoEspecialistas : any[] = [];
+
   constructor(private firestore: AngularFirestore) {
     this.getAdministradores().subscribe(usuario => {
       this.listado = usuario;
+    })
+
+    this.getEspecialistas().subscribe(usuario => {
+      this.listadoEspecialistas = usuario;
+    })
+
+    this.getPacientes().subscribe(usuario => {
+      this.listadoPacientes = usuario;
     })
   }
 
@@ -55,7 +67,6 @@ export class UsuariosService {
     const path = 'administradores';
     const id = uid;
     this.getDoc(path, id).subscribe(res => {
-      console.log(res);
     })
   }
 
@@ -69,18 +80,43 @@ export class UsuariosService {
   }
 
   async savePaciente(res: Paciente) {
-    let entidad = { 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'obraSocial': res.obraSocial, 'mail': res.mail, 'foto1': res.foto1, 'foto2': res.foto2, 'paciente': res.paciente }
-    return await this.firestore.collection('pacientes').add(entidad);
+    let entidad = { 'id':res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'obraSocial': res.obraSocial, 'mail': res.mail, 'foto1': res.foto1, 'foto2': res.foto2, 'paciente': res.paciente }
+    return await this.firestore.collection('pacientes').doc(res.id).set(entidad);
   }
 
   async saveEspecialista(res: Especialista) {
-    let entidad = { 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'especialidad': res.especialidad, 'mail': res.mail, 'foto1': res.foto1, 'especialista': res.especialista }
-    return await this.firestore.collection('especialistas').add(entidad);
+    let entidad = { 'id':res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'especialidad': res.especialidad, 'mail': res.mail, 'foto1': res.foto1, 'especialista': res.especialista, 'estado':false }
+    return await this.firestore.collection('especialistas').doc(res.id).set(entidad);
   }
 
   async saveAdmin(res: Administrador) {
-    let entidad = { 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'mail': res.mail, 'foto1': res.foto1, 'admin': res.admin }
-    return await this.firestore.collection('administradores').add(entidad);
+    let entidad = { 'id':res.id,'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'mail': res.mail, 'foto1': res.foto1, 'admin': res.admin }
+    return await this.firestore.collection('administradores').doc(res.id).set(entidad);
+  }
+
+  actualizarEspecialista ( res: Especialista ) {
+    return this.firestore.collection( 'especialistas' ).doc(res.id).update ( {...res} );
+  }
+
+  traerUsuario ( res: any ) {
+    for (let i = 0; i < this.listado.length; i++) {
+      if (this.listado[i].id == res.uid) {
+        return this.listado[i];
+      }
+    }
+
+    for (let i = 0; i < this.listadoPacientes.length; i++) {
+      if (this.listadoPacientes[i].id == res.uid) {
+        return this.listadoPacientes[i];
+      }
+    }
+
+    for (let i = 0; i < this.listadoEspecialistas.length; i++) {
+      if (this.listadoEspecialistas[i].id == res.uid) {
+        return this.listadoEspecialistas[i];
+      }
+    }
+    //return this.firestore.collection( 'admin' ).doc(res.id).get();
   }
 
 }

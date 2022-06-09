@@ -25,13 +25,18 @@ export class RegistroComponent implements OnInit {
   formulario: FormGroup;
   formularioAux: FormGroup;
   imagenes: any[] = [];
+  inicio?: boolean;
   auth?: boolean;
+  validado: boolean = false;
+  imagenDosUrl: any;
+  imagenUnoUrl: any;
   especialidades: string[] = [
     'Traumatologo',
     'Pediatra',
     'Oftalmologo',
     'Odontologo',
   ];
+  captcha: string | undefined;
 
 
   constructor(public storage: StorageService, public fb: FormBuilder, public router: Router, public afAuth: AngularFireAuth, public servUser: UsuariosService) {
@@ -54,38 +59,45 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth = false;
-   
+    this.inicio = false;
   }
 
+  resolved(captchaResponse: string) {
+    this.captcha = captchaResponse;
+    this.validado = true;
+  }
 
-  async subirArchivo(event: any) {
+  async subirArchivo1(event: any) {
+    const email = this.formulario.value.mail;
     const file = event.target.files[0];
+    const imagenUnoNombre = email + "_1";
     if (file) {
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        this.imagenes.push(reader.result);
-        this.storage.subirImagen(this.formulario.value.dni + "_" + Date.now(), reader.result).then(urlImagen => {
-
-          setTimeout(() => {
-            if (!this.formulario.value.foto1) {
-              this.formulario.value.foto1 = this.imagenes[0];
-            } else {
-              this.formulario.value.foto2 = this.imagenes[0];
-            }
-            this.imagenes = [];
-          }, 3000)
-        });
-      }
+      const tareaImagenUno = this.storage.subirImagen(imagenUnoNombre, file);
+      tareaImagenUno.then((termino) => termino.ref.getDownloadURL().then((URL) => {
+        this.imagenUnoUrl = URL;
+      }))
     }
   }
 
-     
+  async subirArchivo2(event: any) {
+    const email = this.formulario.value.mail;
+    const file = event.target.files[0];
+    const imagenUnoNombre = email + "_2";
+    if (file) {
+      const tareaImagenUno = this.storage.subirImagen(imagenUnoNombre, file);
+      tareaImagenUno.then((termino) => termino.ref.getDownloadURL().then((URL) => {
+        this.imagenDosUrl = URL;
+      }))
+    }
+  }
+
+
+
 
   guardarPaciente() {
     try {
-      const foto1 = this.formulario.value.foto1;
-      const foto2 = this.formulario.value.foto2;
+      const foto1 = this.imagenUnoUrl;
+      const foto2 = this.imagenDosUrl;
       const obraSocial = this.formulario.value.obraSocial;
       const dni = this.formulario.value.dni;
       const nombre = this.formulario.value.nombre;
@@ -93,6 +105,9 @@ export class RegistroComponent implements OnInit {
       const mail = this.formulario.value.mail;
       const edad = this.formulario.value.edad;
       const password = this.formulario.value.password;
+      console.log(nombre + apellido + edad + dni + obraSocial + mail + password)
+      console.log(foto1)
+      console.log(foto2)
 
       if (
         !nombre ||
@@ -111,40 +126,50 @@ export class RegistroComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500,
         });
-    
+
       } else {
 
-        if (this.validarEmail(mail) && this.validarContraseña(password)) {
+        if (this.validado == false) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Debe validar el captcha',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
 
-          this.afAuth.createUserWithEmailAndPassword(mail, password).then(res => {
-            const uid = res.user?.uid;
-            this.paciente.iniciarPaciente(nombre, apellido, edad, dni, obraSocial, mail, foto1, foto2);
-            this.servUser.createDoc(this.paciente,'pacientes',uid!);
-            this.reiniciarValores();
-            Swal.fire({
-              icon: 'success',
-              title: 'La cuenta fue creada con exito',
-              showConfirmButton: false,
-              timer: 1500,
-            });
+          if (this.validarEmail(mail) && this.validarContraseña(password)) {
 
-            setTimeout(() => {
-              this.router.navigate(['/home']);
-            }, 3000)
+            this.afAuth.createUserWithEmailAndPassword(mail, password).then(res => {
+              const uid = res.user?.uid;
+              this.paciente.iniciarPaciente(uid!, nombre, apellido, edad, dni, obraSocial, mail, foto1, foto2);
+              this.servUser.savePaciente(this.paciente);
+              this.reiniciarValores();
+              Swal.fire({
+                icon: 'success',
+                title: 'La cuenta fue creada con exito',
+                showConfirmButton: false,
+                timer: 1500,
+              });
 
-          }, err => {
+              setTimeout(() => {
+                this.router.navigate(['/home']);
+              }, 3000)
+
+            }, err => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error...',
+                text: 'El usuario o la contraseña son incorrectos!'
+              })
+            })
+          } else {
             Swal.fire({
               icon: 'error',
               title: 'Error...',
               text: 'El usuario o la contraseña son incorrectos!'
             })
-          })
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'El usuario o la contraseña son incorrectos!'
-          })
+          }
         }
       }
     } catch (error) {
@@ -153,12 +178,14 @@ export class RegistroComponent implements OnInit {
         title: 'Error...',
         text: 'El usuario o la contraseña son incorrectos!'
       })
+
     }
+
   }
 
   guardarEspecialista() {
     try {
-      const foto1 = this.formularioAux.value.foto1;
+      const foto1 = this.imagenUnoUrl;
       const especialidad = this.formularioAux.value.especialidad;
       const dni = this.formularioAux.value.dni;
       const nombre = this.formularioAux.value.nombre;
@@ -175,7 +202,7 @@ export class RegistroComponent implements OnInit {
         !especialidad ||
         !mail ||
         !password ||
-        !foto1 
+        !foto1
       ) {
         Swal.fire({
           icon: 'warning',
@@ -183,40 +210,50 @@ export class RegistroComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500,
         });
-    
+
       } else {
 
-        if (this.validarEmail(mail) && this.validarContraseña(password)) {
+        if (this.validado == false) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Debe validar el captcha',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
 
-          this.afAuth.createUserWithEmailAndPassword(mail, password).then(res => {
+          if (this.validarEmail(mail) && this.validarContraseña(password)) {
 
-            this.especialista.iniciarEspecialista(nombre, apellido, edad, dni,especialidad, mail, foto1);
-            this.servUser.saveEspecialista(this.especialista);
-            this.reiniciarValores();
-            Swal.fire({
-              icon: 'success',
-              title: 'La cuenta fue creada con exito',
-              showConfirmButton: false,
-              timer: 1500,
-            });
+            this.afAuth.createUserWithEmailAndPassword(mail, password).then(res => {
+              const uid = res.user?.uid;
+              this.especialista.iniciarEspecialista(uid!, nombre, apellido, edad, dni, especialidad, mail, foto1);
+              this.servUser.saveEspecialista(this.especialista);
+              this.reiniciarValores();
+              Swal.fire({
+                icon: 'success',
+                title: 'La cuenta fue creada con exito',
+                showConfirmButton: false,
+                timer: 1500,
+              });
 
-            setTimeout(() => {
-              this.router.navigate(['/home']);
-            }, 3000)
+              setTimeout(() => {
+                this.router.navigate(['/home']);
+              }, 3000)
 
-          }, err => {
+            }, err => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error...',
+                text: 'El usuario o la contraseña son incorrectos!'
+              })
+            })
+          } else {
             Swal.fire({
               icon: 'error',
               title: 'Error...',
               text: 'El usuario o la contraseña son incorrectos!'
             })
-          })
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error...',
-            text: 'El usuario o la contraseña son incorrectos!'
-          })
+          }
         }
       }
     } catch (error) {
@@ -233,11 +270,22 @@ export class RegistroComponent implements OnInit {
 
   setPaciente() {
     this.auth = false;
+    this.inicio = true;
+    this.validado = false;
     this.reiniciarValores();
   }
 
   setEspecialista() {
     this.auth = true;
+    this.inicio = true;
+    this.validado = false;
+    this.reiniciarValores();
+  }
+
+  setSalir() {
+    this.auth = false;
+    this.inicio = false;
+    this.validado = false;
     this.reiniciarValores();
   }
 

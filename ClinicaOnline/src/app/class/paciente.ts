@@ -9,9 +9,11 @@ export class Paciente {
     foto1: string = '';
     foto2: string = '';
     paciente: boolean = true;
+    id: string = '';
 
 
-    iniciarPaciente(nombre:string,apellido:string,edad:number,dni:number,obra:string,mail:string,foto1:string,foto2:string){
+    iniciarPaciente(id:string,nombre:string,apellido:string,edad:number,dni:number,obra:string,mail:string,foto1:string,foto2:string){
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;

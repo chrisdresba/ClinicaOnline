@@ -1,0 +1,27 @@
+<div id="contenedor" class="text-center">
+    <div class="d-flex justify-content-center spin" role="status" [hidden]="!load">
+        <img class="" id="spinner" [hidden]="!load" src="./../../../assets/logosalud.gif" alt="ClinicaOnline"
+            routerLink="/home" width="200" height="200">
+    </div>
+    <main class="perfil">
+        <div class="row">
+            <ul>
+                <li *ngIf="usuario.paciente"><h2>Perfil de Paciente</h2></li>
+                <li *ngIf="usuario.especialista"><h2>Perfil de Especialista</h2></li>
+                <li *ngIf="usuario.admin"><h2>Perfil de Administrador</h2></li>
+                <li>Nombre: {{usuario.nombre}}</li>
+                <li>Apellido: {{usuario.apellido}}</li>
+                <li>Edad:{{usuario.edad}}</li>
+                <li>Dni:{{usuario.dni}}</li>
+                <li>Mail:{{usuario.mail}}</li>
+                <li *ngIf="usuario.paciente">Obra Social: {{usuario.obraSocial}}</li>
+                <li *ngIf="usuario.especialista">Especialidad: {{usuario.especialidad}}</li>
+                <li *ngIf="usuario.especialista">Horarios: <input type="text"> </li>
+                <br>
+                <li><img src="{{usuario.foto1}}" alt=""></li>
+            </ul>
+            <br>
+        </div>
+    </main>
+
+</div>

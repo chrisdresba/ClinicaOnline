@@ -7,8 +7,10 @@ export class Administrador {
     password: string = '';
     foto1: string = '';
     admin: boolean = true;
+    id: string = '';
 
-    iniciarAdmin(nombre:string,apellido:string,edad:number,dni:number,mail:string,foto1:string){
+    iniciarAdmin(id:string,nombre:string,apellido:string,edad:number,dni:number,mail:string,foto1:string){
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;

@@ -13,6 +13,10 @@ import {
 import Swal from 'sweetalert2';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { SesionService } from 'src/app/services/sesion.service';
+import { Paciente } from 'src/app/class/paciente';
+import { Administrador } from 'src/app/class/administrador';
+import { Especialista } from 'src/app/class/especialista';
 
 
 @Component({
@@ -22,41 +26,60 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 })
 export class LoginComponent implements OnInit {
 
-  public load: boolean;
+  public load?: boolean;
   formulario: FormGroup;
   public email?: string;
   public password?: string;
+  public pacientes: Paciente [] = [];
+  public especialistas: Especialista [] = [];
+  public admin?: any;
+  usuarioSeleccionado: any;
 
-  constructor(public router: Router, public afAuth: AngularFireAuth, public fb: FormBuilder, public servUsuario: UsuariosService, public database: FirebaseService) {
-    this.load = false;
+  constructor(public router: Router, public afAuth: AngularFireAuth,public sesion:SesionService, public fb: FormBuilder, public servUsuario: UsuariosService, public database: FirebaseService) {
+
     this.formulario = this.fb.group({
       'email': ['', [Validators.required, Validators.email]],
       'password': ['', [Validators.required, Validators.minLength(6)]],
     })
+
+    setTimeout(()=>{
+      this.load = false;
+    },1000)
+
   }
 
   ngOnInit(): void {
-    this.load = false;
+    this.load = true;
+    this.servUsuario.getPacientes().subscribe(paciente => {
+      this.pacientes = paciente.slice(0,3);
+    })
+    this.servUsuario.getEspecialistas().subscribe(esp => {
+      this.especialistas = esp.slice(0,2);
+    })
+    this.servUsuario.getAdministradores().subscribe(adm => {
+      this.admin = adm.slice(0,1);
+    })
+
   }
 
   async ingresar() {
     try {
-      this.load = true;
   
       if (this.validarEmail(this.email!) && this.validarContraseña(this.password!)) {
-
+        this.load = true;
         this.afAuth.signInWithEmailAndPassword(this.email!, this.password!).then(res => {
           if (this.servUsuario.userAdmin(this.email!)) {
-            localStorage.setItem('perfilAdmin', 'admin');
+            this.sesion.logAdmin();
           }
-            setTimeout(() => { this.router.navigate(['/home']) }, 4000)
-            
+            setTimeout(() => { this.router.navigate(['/home']) }, 3000)
+
         }, err => {
           Swal.fire({
             icon: 'error',
             title: 'Error...',
             text: 'Problemas con la conexión!'
           })
+          this.load = false;
         })
       } else {
         Swal.fire({
@@ -64,6 +87,7 @@ export class LoginComponent implements OnInit {
           title: 'Error...',
           text: 'El usuario o la contraseña son incorrectos!'
         })
+   
       }
     } catch (error) {
       Swal.fire({
@@ -71,24 +95,15 @@ export class LoginComponent implements OnInit {
         title: 'Error...',
         text: 'El usuario o la contraseña son incorrectos!'
       })
+      this.load = false;
     }
 
   }
 
-  async ingresarPaciente() {
-    this.email = 'paciente@gmail.com';
+  async ingresoRapido(usuario:any){
+    this.email = usuario.mail;
     this.password = '123456';
-  }
-
-  async ingresarEspecialista() {
-    this.email = 'especialista@gmail.com';
-    this.password = '123456';
-  }
-
-  async ingresarAdmin() {
-    this.email = 'admin@admin.com';
-    this.password = '123456';
-  }
+  };
 
   validarEmail(email: string) {
     let expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;

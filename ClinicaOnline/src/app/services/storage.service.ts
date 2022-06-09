@@ -14,14 +14,11 @@ export class StorageService {
 
   constructor(private storage: AngularFireStorage) { }
 
-  async subirImagen(nombre: string, imgBase: any) {
+   subirImagen(nombre: string, datos: any) {
+    return this.storage.upload(nombre, datos);
+  }
 
-    try {
-      let respuesta = await this.storareRef.child("usuarios/" + nombre).putString(imgBase, 'data_url');
-      return await respuesta.ref.getDownloadURL();
-    } catch (err) {
-      return null;
-    }
-
+  public referenciaCloudStorage(nombreArchivo: string) {
+    return this.storage.ref(nombreArchivo);
   }
 }

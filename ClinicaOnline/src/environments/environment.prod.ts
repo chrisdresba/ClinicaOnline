@@ -8,5 +8,9 @@ export const environment = {
     apiKey: 'AIzaSyCcVn3vOXTLML-ugZkEPIhAMqJUjAZBIUU',
     authDomain: 'clinicaonline-7159e.firebaseapp.com',
     messagingSenderId: '181522342072',
-  }
+  },
+  recaptcha: {
+    siteKey: '6LcFr1cgAAAAANSgbC6_EN0eUOOyp2Ui4E-c3gFl',
+  },
+  
 };

@@ -9,9 +9,11 @@ export class Especialista {
     foto1: string = '';
     especialista: boolean = true;
     estado:boolean = false;
+    id: string = '';
 
 
-    iniciarEspecialista(nombre:string,apellido:string,edad:number,dni:number,esp:string,mail:string,foto1:string){
+    iniciarEspecialista(id:string,nombre:string,apellido:string,edad:number,dni:number,esp:string,mail:string,foto1:string){
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
@@ -19,5 +21,6 @@ export class Especialista {
         this.especialidad = esp;
         this.mail = mail;
         this.foto1 = foto1;
+        this.estado = false;
     }
 }

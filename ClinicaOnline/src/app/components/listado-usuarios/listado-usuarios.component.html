@@ -7,7 +7,9 @@
                     <th>Apellido</th>
                     <th>Dni</th>
                     <th>Edad</th>
+                    <th>Correo</th>
                     <th>Perfil</th>
+                    <th>Estado</th>
                 
                 </tr>
             </thead>
@@ -17,14 +19,18 @@
                     <td>{{pac.apellido}}</td>
                     <td>{{pac.dni}}</td>
                     <td>{{pac.edad}}</td>
+                    <td>{{pac.mail}}</td>
                     <td>Paciente</td>
+                    <td>Activa</td>
                 </tr>
                 <tr *ngFor="let esp of listadoEsp">
                     <td>{{esp.nombre}}</td>
                     <td>{{esp.apellido}}</td>
                     <td>{{esp.dni}}</td>
                     <td>{{esp.edad}}</td>
+                    <td>{{esp.mail}}</td>
                     <td>{{esp.especialidad}}</td>
+                    <td><button type="button" class="btn btn-success  btn-circle" (click)="eligeEspecialista(esp)">info<i class="fa fa-check"></i> </button></td>
                 </tr>
 
             </tbody>
