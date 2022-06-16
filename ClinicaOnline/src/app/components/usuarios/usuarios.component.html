@@ -8,6 +8,8 @@
                         <app-listado-usuarios [listadoPacientes]="listadoPacientes" [listadoEsp]="listadoEsp" 
                         (especialistaSeleccionado)="tomarEspecialistaParaDetalles($event)">>
                         </app-listado-usuarios>
+                        <button class="btnDescarga" (click)="descargarPacientes()">Descargar Pacientes Excel</button>
+                        <button class="btnDescarga" (click)="descargarEspecialistas()">Descargar Especialistas Excel</button>
                     </div>
                 </div>
             </div>

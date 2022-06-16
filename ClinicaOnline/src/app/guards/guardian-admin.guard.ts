@@ -20,8 +20,7 @@ export class GuardianAdminGuard implements CanActivate {
       if(this.sesion.sesionAdmin){
         return true
          }else{
-           return false
-         }
-  }
-  
+          return false
+        }
+      }
 }

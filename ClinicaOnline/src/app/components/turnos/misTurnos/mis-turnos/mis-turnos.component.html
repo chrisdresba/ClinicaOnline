@@ -1,1 +1,4 @@
-<p>mis-turnos works!</p>
+<div id="contenedor">
+    <app-turnos-pacientes *ngIf="!usuarioPaciente"> </app-turnos-pacientes>
+    <app-turnos-especialistas *ngIf="usuarioPaciente"> </app-turnos-especialistas>         
+</div>

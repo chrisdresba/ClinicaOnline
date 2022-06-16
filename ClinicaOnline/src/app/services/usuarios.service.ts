@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Administrador } from '../class/administrador';
 import { Especialista } from '../class/especialista';
+import { Horarios } from '../class/horarios';
 import { Paciente } from '../class/paciente';
 
 @Injectable({
@@ -85,7 +86,7 @@ export class UsuariosService {
   }
 
   async saveEspecialista(res: Especialista) {
-    let entidad = { 'id':res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'especialidad': res.especialidad, 'mail': res.mail, 'foto1': res.foto1, 'especialista': res.especialista, 'estado':false }
+    let entidad = { 'id':res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'especialidad': res.especialidad, 'mail': res.mail, 'foto1': res.foto1, 'especialista': res.especialista, 'estado':false,'horario':res.horario }
     return await this.firestore.collection('especialistas').doc(res.id).set(entidad);
   }
 
@@ -116,7 +117,6 @@ export class UsuariosService {
         return this.listadoEspecialistas[i];
       }
     }
-    //return this.firestore.collection( 'admin' ).doc(res.id).get();
   }
 
 }

@@ -122,3 +122,18 @@ body {
     max-width: 330px;
 }
 
+app-listado-especialidades{
+    max-height: 150px;
+}
+
+#listado-especialistas{
+    max-width: 200px;
+    height: 180px;
+    overflow: scroll;
+}
+
+#seleccion-especialistas{
+    max-width: 200px;
+    height: 45px;
+    overflow: scroll;
+}

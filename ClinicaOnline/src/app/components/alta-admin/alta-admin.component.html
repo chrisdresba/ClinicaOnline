@@ -92,7 +92,8 @@
                                             (input)="subirArchivo2($event)" accept=".jpeg,.jpg,.png,.svg" required>
                                     </div>
                                     <br>
-                                    <re-captcha (resolved)="resolved($event)" siteKey="6LfXuVYgAAAAACS99u4vJ-PYiWmPO-GpqSJ1LuWs"></re-captcha>
+                                    <re-captcha (resolved)="resolved($event)"
+                                        siteKey="6LfXuVYgAAAAACS99u4vJ-PYiWmPO-GpqSJ1LuWs"></re-captcha>
                                     <input type="submit" class="btnRegister" value="Registrar"
                                         (click)="guardarPaciente()" />
                                 </div>
@@ -127,6 +128,30 @@
                                     <input type="number" class="form-control" formControlName="edad" name="edad"
                                         placeholder="Edad" value="" />
                                 </div>
+                                <br>
+                                <div id="listado-especialistas">
+                                    <app-listado-especialidades (onSeleccionEspecialidad)="elegirEspecialidad($event)">
+                                    </app-listado-especialidades>
+                                </div>
+                                <div class="form-group" id="seleccion-especialistas">
+
+                                    <ul name="tipo" [(ngModel)]="listadoEspecialidades">
+                                        <li *ngFor="let esp of listadoEspecialidades" readonly=true>
+                                            {{esp}} </li>
+                                    </ul>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label class="fuente" for="nombre">Agregar especialidad (Opcional)</label>
+                                    <span *ngIf="this.formulario.get('especialidad')?.hasError('required')"
+                                        class="text-danger">
+                                        *</span>
+                                    <input type="text" class="form-control" formControlName="especialidad"
+                                        name="especialidad" placeholder="Especialidad" value="" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="fuente" for="nombre">Dni</label>
                                     <span *ngIf="this.formulario.get('dni')?.hasError('required')" class="text-danger">
@@ -134,17 +159,6 @@
                                     <input type="number" class="form-control" formControlName="dni" name="dni"
                                         placeholder="Dni" value="" />
                                 </div>
-                                <div class="form-group">
-                                    <label class="fuente" for="nombre">Especialidad</label>
-                                    <span *ngIf="this.formulario.get('especialidad')?.hasError('required')"
-                                    class="text-danger">
-                                    *</span>
-                                    <input type="text" class="form-control" formControlName="especialidad" name="especialidad" placeholder="Especialidad" value="" />
-                              
-                                </div>
-
-                            </div>
-                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="fuente" for="nombre">Correo electrónico</label>
                                     <span *ngIf="this.formulario.get('mail')?.hasError('required')" class="text-danger">
@@ -166,7 +180,8 @@
                                         (input)="subirArchivo1($event)" accept=".jpeg,.jpg,.png,.svg" required>
                                 </div>
                                 <br>
-                                <re-captcha (resolved)="resolved($event)" siteKey="6LfXuVYgAAAAACS99u4vJ-PYiWmPO-GpqSJ1LuWs"></re-captcha>
+                                <re-captcha (resolved)="resolved($event)"
+                                    siteKey="6LfXuVYgAAAAACS99u4vJ-PYiWmPO-GpqSJ1LuWs"></re-captcha>
                                 <input type="submit" class="btnRegister" value="Registrar"
                                     (click)="guardarEspecialista()" />
                             </div>
@@ -231,9 +246,9 @@
                                         (input)="subirArchivo1($event)" accept=".jpeg,.jpg,.png,.svg" required>
                                 </div>
                                 <br>
-                                <re-captcha (resolved)="resolved($event)" siteKey="6LfXuVYgAAAAACS99u4vJ-PYiWmPO-GpqSJ1LuWs"></re-captcha>
-                                <input type="submit" class="btnRegister" value="Registrar"
-                                    (click)="guardarAdmin()" />
+                                <re-captcha (resolved)="resolved($event)"
+                                    siteKey="6LfXuVYgAAAAACS99u4vJ-PYiWmPO-GpqSJ1LuWs"></re-captcha>
+                                <input type="submit" class="btnRegister" value="Registrar" (click)="guardarAdmin()" />
                             </div>
                         </form>
                     </div>

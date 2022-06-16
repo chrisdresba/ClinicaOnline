@@ -17,6 +17,15 @@
    margin-left: 10%;
 }
 
+.btnDescarga{
+    background: rgb(23,189,58);
+    background: radial-gradient(circle, rgba(23,189,58,1) 18%, rgba(23,189,58,1) 91%, rgba(81,127,164,1) 100%);
+    border-radius:5px;
+    border: none;
+    padding: 5px;
+    margin: 5px;
+}
+
 #form-alta{
     background-color: #33373b;
     border-radius: 10px;

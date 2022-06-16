@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { GuardianAdminGuard } from 'src/app/guards/guardian-admin.guard';
 import { MisTurnosComponent } from './misTurnos/mis-turnos/mis-turnos.component';
 import { SolicitarTurnosComponent } from './solicitar/solicitar-turnos/solicitar-turnos.component';
 import { TurnosComponent } from './turnos.component';
@@ -8,6 +9,7 @@ const routes: Routes = [
   {
     path: '',
     component:TurnosComponent,
+    canActivate: [GuardianAdminGuard]
   },
   {
     path: 'mis-turnos',

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
+
 import {
   FormGroup,
   FormControl,
@@ -8,11 +9,16 @@ import {
   FormBuilder
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Especialidades } from 'src/app/class/especialidades';
 import { Especialista } from 'src/app/class/especialista';
 import { Paciente } from 'src/app/class/paciente';
 import { StorageService } from 'src/app/services/storage.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { EspecialidadesService } from 'src/app/services/especialidades.service';
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -30,16 +36,12 @@ export class RegistroComponent implements OnInit {
   validado: boolean = false;
   imagenDosUrl: any;
   imagenUnoUrl: any;
-  especialidades: string[] = [
-    'Traumatologo',
-    'Pediatra',
-    'Oftalmologo',
-    'Odontologo',
-  ];
+  especialidades?: Especialidades[];
+  listadoEspecialidades?: string[] = [];
   captcha: string | undefined;
 
 
-  constructor(public storage: StorageService, public fb: FormBuilder, public router: Router, public afAuth: AngularFireAuth, public servUser: UsuariosService) {
+  constructor(public storage: StorageService, public fb: FormBuilder, public router: Router, public afAuth: AngularFireAuth, public servUser: UsuariosService, public servEsp: EspecialidadesService) {
     this.formulario = this.fb.group({
       'nombre': ['', [Validators.required, Validators.minLength(3), Validators.maxLength(25)]],
       'apellido': ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -55,12 +57,23 @@ export class RegistroComponent implements OnInit {
     this.formularioAux = this.formulario;
     this.paciente = new Paciente();
     this.especialista = new Especialista();
+
+    this.servEsp.getEspecialidades().subscribe(esp => {
+      this.especialidades = esp;
+    });
+
   }
 
   ngOnInit(): void {
     this.auth = false;
     this.inicio = false;
+
+    this.servEsp.getEspecialidades().subscribe(esp => {
+      this.especialidades = esp;
+    })
+
   }
+
 
   resolved(captchaResponse: string) {
     this.captcha = captchaResponse;
@@ -105,9 +118,6 @@ export class RegistroComponent implements OnInit {
       const mail = this.formulario.value.mail;
       const edad = this.formulario.value.edad;
       const password = this.formulario.value.password;
-      console.log(nombre + apellido + edad + dni + obraSocial + mail + password)
-      console.log(foto1)
-      console.log(foto2)
 
       if (
         !nombre ||
@@ -194,67 +204,78 @@ export class RegistroComponent implements OnInit {
       const edad = this.formularioAux.value.edad;
       const password = this.formularioAux.value.password;
 
-      if (
-        !nombre ||
-        !apellido ||
-        (!(edad < 120 && edad >= 18)) ||
-        (!(dni < 99999999 && dni >= 1000000)) ||
-        !especialidad ||
-        !mail ||
-        !password ||
-        !foto1
-      ) {
+      if (especialidad.length > 3) this.listadoEspecialidades?.push(especialidad);
+   
+      if (this.listadoEspecialidades?.length === 0) {
         Swal.fire({
-          icon: 'warning',
-          title: 'Debe ingresar todos los datos',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-
+          icon: 'error',
+          title: 'Error...',
+          text: 'Debe ingresar una especialidad'
+        })
       } else {
-
-        if (this.validado == false) {
+        if (
+          !nombre ||
+          !apellido ||
+          (!(edad < 120 && edad >= 18)) ||
+          (!(dni < 99999999 && dni >= 1000000)) ||
+          !especialidad ||
+          !mail ||
+          !password ||
+          !foto1
+        ) {
           Swal.fire({
             icon: 'warning',
-            title: 'Debe validar el captcha',
+            title: 'Debe ingresar todos los datos',
             showConfirmButton: false,
             timer: 1500,
           });
+
         } else {
 
-          if (this.validarEmail(mail) && this.validarContraseña(password)) {
+          if (this.validado == false) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Debe validar el captcha',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
 
-            this.afAuth.createUserWithEmailAndPassword(mail, password).then(res => {
-              const uid = res.user?.uid;
-              this.especialista.iniciarEspecialista(uid!, nombre, apellido, edad, dni, especialidad, mail, foto1);
-              this.servUser.saveEspecialista(this.especialista);
-              this.reiniciarValores();
-              Swal.fire({
-                icon: 'success',
-                title: 'La cuenta fue creada con exito',
-                showConfirmButton: false,
-                timer: 1500,
-              });
+            if (this.validarEmail(mail) && this.validarContraseña(password)) {
 
-              setTimeout(() => {
-                this.router.navigate(['/home']);
-              }, 3000)
+              this.afAuth.createUserWithEmailAndPassword(mail, password).then(res => {
+                const uid = res.user?.uid;
+                this.especialista.iniciarEspecialista(uid!, nombre, apellido, edad, dni, this.listadoEspecialidades!, mail, foto1);
+                this.servUser.saveEspecialista(this.especialista);
+                this.reiniciarValores();
+                Swal.fire({
+                  icon: 'success',
+                  title: 'La cuenta fue creada con exito',
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
 
-            }, err => {
+                setTimeout(() => {
+                  this.router.navigate(['/home']);
+                }, 3000)
+
+              }, err => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error...',
+                  text: 'El usuario o la contraseña son incorrectos!'
+                })
+              })
+            } else {
               Swal.fire({
                 icon: 'error',
                 title: 'Error...',
                 text: 'El usuario o la contraseña son incorrectos!'
               })
-            })
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: 'El usuario o la contraseña son incorrectos!'
-            })
+            }
           }
         }
+
       }
     } catch (error) {
       Swal.fire({
@@ -287,6 +308,18 @@ export class RegistroComponent implements OnInit {
     this.inicio = false;
     this.validado = false;
     this.reiniciarValores();
+  }
+
+
+  elegirEspecialidad(esp: Especialidades) {
+
+    let existe2 = true;
+    this.listadoEspecialidades?.forEach(item => {
+      if (item == esp.nombre) {
+        existe2 = false;
+      }
+    })
+    if (existe2) this.listadoEspecialidades?.push(esp.nombre);
   }
 
   validarEmail(email: string) {

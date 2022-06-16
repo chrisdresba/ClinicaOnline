@@ -46,6 +46,21 @@ img{
   -webkit-box-shadow: 5px 5px 40px 30px rgba(255, 254, 254, 0.7), inset 0px 0px 0px 46px rgba(139,139,139,0.64); 
   box-shadow: 10px 10px 40px 80px rgba(242, 234, 234, 0.7), inset 0px 0px 0px 106px rgba(139,139,139,0.64);
 }
+
+#setHorario{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 10;
+  max-width:330px; 
+  max-height:330px;
+  background-color: #8e9eab;
+  border: 2px solid #52565a;
+  border-radius: 10px;
+}
       
 li{
     list-style: none;

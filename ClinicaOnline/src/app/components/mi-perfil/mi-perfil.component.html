@@ -3,12 +3,56 @@
         <img class="" id="spinner" [hidden]="!load" src="./../../../assets/logosalud.gif" alt="ClinicaOnline"
             routerLink="/home" width="200" height="200">
     </div>
+    <div class="d-flex justify-content-center spin" role="status" [hidden]="loadAtencion">
+        <div class="" id="setHorario" [hidden]="!loadAtencion" alt="ClinicaOnline">
+            <button id="btnCerrar" (click)="cerrarConfiguracion()">X</button>
+            <br>
+            <label class="fuente mt-2" for="tipo">Especialidad</label>
+            <br>
+            <select name="tipo" [(ngModel)]="especialidad" style="width:250px;">
+                <option [value]="item" *ngFor="let item of usuario.especialidad">{{item}}</option>
+            </select>
+            <br>
+            <label class="fuente mt-2" for="tipo">Dia de la Semana</label>
+            <br>
+            <select name="tipo" [(ngModel)]="dia" style="width:250px;">
+                <option [value]="item" *ngFor="let item of dias">{{item}}</option>
+            </select>
+            <br>
+                <label class="fuente" for="tipo">Hora Inicio</label>
+                <br>
+                <select *ngIf="dia != 'sabado'" name="tipo" [(ngModel)]="horaDesde" style="width:250px;">
+                    <option  [value]="item" *ngFor="let item of horarioDesde">{{item}}:00</option>
+                  
+                </select>
+                <select *ngIf="dia == 'sabado'" name="tipo" [(ngModel)]="horaDesde" style="width:250px;">
+                    <option [value]="item" *ngFor="let item of horarioDesdeSab">{{item}}:00</option>
+                </select>
+                <br>
+                <label class="fuente mt-3" for="tipo">Hora Finalización</label>
+                <br>
+                <select name="tipo" *ngIf="dia != 'sabado'" [(ngModel)]="horaHasta" style="width:250px;">
+                    <option [value]="item" *ngFor="let item of horarioHasta">{{item}}:00</option>
+                </select>
+                <select name="tipo" *ngIf="dia == 'sabado'" [(ngModel)]="horaHasta" style="width:250px;">
+                    <option [value]="item" *ngFor="let item of horarioHastaSab">{{item}}:00</option>
+                </select>
+                <button class="mt-2" (click)="guardarHorario()">Guardar Horario</button>
+            
+        </div>
+    </div>
     <main class="perfil">
         <div class="row">
             <ul>
-                <li *ngIf="usuario.paciente"><h2>Perfil de Paciente</h2></li>
-                <li *ngIf="usuario.especialista"><h2>Perfil de Especialista</h2></li>
-                <li *ngIf="usuario.admin"><h2>Perfil de Administrador</h2></li>
+                <li *ngIf="usuario.paciente">
+                    <h2>Perfil de Paciente</h2>
+                </li>
+                <li *ngIf="usuario.especialista">
+                    <h2>Perfil de Especialista</h2>
+                </li>
+                <li *ngIf="usuario.admin">
+                    <h2>Perfil de Administrador</h2>
+                </li>
                 <li>Nombre: {{usuario.nombre}}</li>
                 <li>Apellido: {{usuario.apellido}}</li>
                 <li>Edad:{{usuario.edad}}</li>
@@ -16,7 +60,7 @@
                 <li>Mail:{{usuario.mail}}</li>
                 <li *ngIf="usuario.paciente">Obra Social: {{usuario.obraSocial}}</li>
                 <li *ngIf="usuario.especialista">Especialidad: {{usuario.especialidad}}</li>
-                <li *ngIf="usuario.especialista">Horarios: <input type="text"> </li>
+                <li *ngIf="usuario.especialista"><button (click)="configuracion()">Agregar disponibilidad horaria</button></li>
                 <br>
                 <li><img src="{{usuario.foto1}}" alt=""></li>
             </ul>

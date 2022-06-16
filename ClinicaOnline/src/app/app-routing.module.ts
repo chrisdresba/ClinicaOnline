@@ -6,6 +6,7 @@ import { MiPerfilComponent } from './components/mi-perfil/mi-perfil.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { GuardianAdminGuard } from './guards/guardian-admin.guard';
+import { GuardianSesionactivaGuard } from './guards/guardian-sesionactiva.guard';
 
 const routes: Routes = [
   {
@@ -36,7 +37,8 @@ const routes: Routes = [
   },
   {
     path: 'miperfil',
-    component :  MiPerfilComponent
+    component :  MiPerfilComponent,
+    canActivate: [GuardianSesionactivaGuard]
   }
 ];
 

@@ -18,6 +18,10 @@ import { AltaAdminComponent } from './components/alta-admin/alta-admin.component
 import { BotonesUsuariosComponent } from './components/elements/botones/botones-usuarios/botones-usuarios.component';
 import { RecaptchaModule} from 'ng-recaptcha';
 import { MiPerfilComponent } from './components/mi-perfil/mi-perfil.component';
+import { ListadoEspecialidadesComponent } from './components/listado-especialidades/listado-especialidades.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 
 @NgModule({
   declarations: [
@@ -31,12 +35,15 @@ import { MiPerfilComponent } from './components/mi-perfil/mi-perfil.component';
     AltaAdminComponent,
     BotonesUsuariosComponent,
     MiPerfilComponent,
+    ListadoEspecialidadesComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     RecaptchaModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
     AppRoutingModule,
     MDBBootstrapModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),

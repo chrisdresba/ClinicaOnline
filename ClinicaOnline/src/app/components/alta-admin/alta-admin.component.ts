@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Administrador } from 'src/app/class/administrador';
+import { Especialidades } from 'src/app/class/especialidades';
 import { Especialista } from 'src/app/class/especialista';
 import { Paciente } from 'src/app/class/paciente';
 import { StorageService } from 'src/app/services/storage.service';
@@ -36,12 +37,8 @@ export class AltaAdminComponent implements OnInit {
   imagenUnoUrl: any;
   captcha: string | undefined;
   validado: boolean = false;
-  especialidades: string[] = [
-    'Traumatologo',
-    'Pediatra',
-    'Oftalmologo',
-    'Odontologo',
-  ];
+  especialidades?: Especialidades[];
+  listadoEspecialidades?: string[] = [];
 
 
   constructor(public storage: StorageService, public fb: FormBuilder, public router: Router, public afAuth: AngularFireAuth, public servUser: UsuariosService) {
@@ -203,65 +200,76 @@ export class AltaAdminComponent implements OnInit {
       const edad = this.formularioAux.value.edad;
       const password = this.formularioAux.value.password;
 
-      if (
-        !nombre ||
-        !apellido ||
-        (!(edad < 120 && edad >= 18)) ||
-        (!(dni < 99999999 && dni >= 1000000)) ||
-        !especialidad ||
-        !mail ||
-        !password ||
-        !foto1
-      ) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Debe ingresar todos los datos',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+      if (especialidad.length > 3) this.listadoEspecialidades?.push(especialidad);
 
+      if (this.listadoEspecialidades?.length === 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error...',
+          text: 'Debe ingresar una especialidad'
+        })
       } else {
 
-        if (this.validado == false) {
+        if (
+          !nombre ||
+          !apellido ||
+          (!(edad < 120 && edad >= 18)) ||
+          (!(dni < 99999999 && dni >= 1000000)) ||
+          !especialidad ||
+          !mail ||
+          !password ||
+          !foto1
+        ) {
           Swal.fire({
             icon: 'warning',
-            title: 'Debe validar el captcha',
+            title: 'Debe ingresar todos los datos',
             showConfirmButton: false,
             timer: 1500,
           });
+
         } else {
 
-          if (this.validarEmail(mail) && this.validarContraseña(password)) {
+          if (this.validado == false) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Debe validar el captcha',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
 
-            this.afAuth.createUserWithEmailAndPassword(mail, password).then(res => {
-              const uid = res.user?.uid;
-              this.especialista.iniciarEspecialista(uid!, nombre, apellido, edad, dni, especialidad, mail, foto1);
-              this.servUser.saveEspecialista(this.especialista);
-              this.reiniciarValores();
-              Swal.fire({
-                icon: 'success',
-                title: 'La cuenta fue creada con exito',
-                showConfirmButton: false,
-                timer: 1500,
-              });
+            if (this.validarEmail(mail) && this.validarContraseña(password)) {
 
-              setTimeout(() => {
-                this.router.navigate(['/home']);
-              }, 3000)
+              this.afAuth.createUserWithEmailAndPassword(mail, password).then(res => {
+                const uid = res.user?.uid;
+                this.especialista.iniciarEspecialista(uid!, nombre, apellido, edad, dni, this.listadoEspecialidades!, mail, foto1);
+                this.servUser.saveEspecialista(this.especialista);
+                this.reiniciarValores();
+                Swal.fire({
+                  icon: 'success',
+                  title: 'La cuenta fue creada con exito',
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
 
-            }, err => {
+                setTimeout(() => {
+                  this.router.navigate(['/home']);
+                }, 3000)
+
+              }, err => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error...',
+                  text: 'El usuario o la contraseña son incorrectos!'
+                })
+              })
+            } else {
               Swal.fire({
                 icon: 'error',
                 title: 'Error...',
                 text: 'El usuario o la contraseña son incorrectos!'
               })
-            })
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error...',
-              text: 'El usuario o la contraseña son incorrectos!'
-            })
+            }
           }
         }
       }
@@ -378,6 +386,17 @@ export class AltaAdminComponent implements OnInit {
     this.esp = true;
     this.pac = true;
     this.reiniciarValores();
+  }
+
+  elegirEspecialidad(esp: Especialidades) {
+
+    let existe2 = true;
+    this.listadoEspecialidades?.forEach(item => {
+      if (item == esp.nombre) {
+        existe2 = false;
+      }
+    })
+    if (existe2) this.listadoEspecialidades?.push(esp.nombre);
   }
 
   validarEmail(email: string) {
