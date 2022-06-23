@@ -1,11 +1,7 @@
 <div class="container py-4">
   <header class="pb-3 mb-4 border-bottom">
     <a class="d-flex align-items-center text-dark text-decoration-none">
-      <span class="fs-4">Listado de turnos</span>
-      <div style="float: right;">
-        <input type="text">
-        <button>Buscar</button>
-      </div>
+      <h2 >Listado de turnos</h2>
     </a>
 
   </header>
@@ -20,10 +16,10 @@
   <div class="row align-items-md-stretch">
     <div class="col-md-6">
       <div>
-        <div class="p-5 text-white bg-dark rounded-3">
+        <div class="p-5 text-white bg-dark rounded-3" *ngIf="!estadoTurno">
           <h2>Turno</h2>
           <p>Fecha: {{turno.fecha}}</p>
-          <p>Hora: {{turno.hora}}</p>
+          <p>Hora: {{turno.hora | horapipe}}</p>
           <p>Especialidad : {{turno.especialidad}}</p>
           <br>
           <button class="w-100 btn btn-outline-success mb-1" type="button" (click)="cancelarTurno()">Cancelar
@@ -32,15 +28,16 @@
       </div>
     </div>
     <div class="col-md-6">
-      <div class="h-100 p-5 bg-light border rounded-3">
+      <div class="h-100 p-5 bg-light border rounded-3" *ngIf="!estadoTurno">
         <h2>Comentario</h2>
-        <input type="text" class="w-200" name="" id="">
-        <button class="btn btn-outline-secondary" type="button">Example button</button>
+        <div class="md-form">
+          <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="comentario"></textarea>
+        </div>
       </div>
     </div>
   </div>
 
   <footer class="pt-3 mt-4 text-muted border-top">
-    &copy; 2021
+    &copy; 2022 Cristian Barraza
   </footer>
 </div>

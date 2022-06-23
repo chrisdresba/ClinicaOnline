@@ -1,44 +1,56 @@
 <div class="container py-4">
-    <header class="pb-2 mb-2 border-bottom">
-        <h2>Solicitar Turno</h2>
-    </header>
-    <div class="p-5 mb-4 bg-light rounded-3" id="contenedor">
-      <div class="container-fluid py-5 btnEspecialidades" [hidden]="auxEs">
-        <tr *ngFor="let esp of especialidades">
-            <td><img id="imgEspecialidad" src="{{esp.img}}" alt="{{esp.nombre}}" (click)="eligeEspecialidad(esp)">
-            </td>
-        </tr>
-      </div>
-
-      <div class="container-fluid py-5 btnEspecialidades" [hidden]="!auxEsp">
-        <tr *ngFor="let esp of especialistasFilter">
-            <td><img id="imgEspecialidad" src="{{esp.foto1}}" alt="{{esp.nombre}}" (click)="eligeEspecialista(esp)">
-            </td>
-        </tr>
-      </div>
-
-      <label for="" [hidden]="!auxHor">Seleccione una fecha: {{turno.fecha}}</label>
-      <div class="container-fluid horario" [hidden]="!auxHor">
-        <tr *ngFor="let dia of dias">
-          <td><button class="btnDia" (click)="eligeDia(dia)">{{dia}}</button>
-          </td>
+  <header class="pb-2 mb-2 border-bottom">
+    <h2>Solicitar Turno</h2>
+  </header>
+  <div class="p-5 mb-4 bg-light rounded-3" id="contenedor">
+    <div class="container-fluid py-5 btnEspecialidades" [hidden]="auxEs">
+      <tr *ngFor="let esp of especialidades">
+        <td><img id="imgEspecialidad" src="{{esp.img}}" alt="{{esp.nombre}}" title="{{esp.nombre}}" (click)="eligeEspecialidad(esp)">
+        </td>
       </tr>
-      </div>
-      <label for="" [hidden]="!auxHor">Seleccione un horario: {{turno.hora}}</label>
-      <div class="container-fluid horario" [hidden]="!auxHor">
-        <tr *ngFor="let hora of horario">
-          <td><button class="btnHora" (click)="eligeHorario(hora)">{{hora}}:00</button>
-          </td>
-      </tr>
-      </div>
-      <label for="" [hidden]="!auxHor">Turno Seleccionado: {{diaSeleccionado}} - {{horaSeleccionada}}:00</label>
-      <br>
-      <button class="btnCargar" [hidden]="!auxHor" (click)="cargarTurno()">Cargar Turno</button>
     </div>
-  
+
+    <div class="container-fluid py-5 btnEspecialidades" [hidden]="!auxEsp">
+      <tr *ngFor="let esp of especialistasFilter">
+        <td><img id="imgEspecialidad" src="{{esp.foto1}}" alt="{{esp.nombre}}"  title="{{esp.nombre}} {{esp.apellido}}" (click)="eligeEspecialista(esp)">
+        </td>
+      </tr>
+    </div>
+
+    <div class="row">
+      <div class="col-md-9">
+        <label for="" [hidden]="!auxHor">Seleccione una fecha: {{turno.fecha}}</label>
+        <div class="container-fluid horario" [hidden]="!auxHor">
+          <tr *ngFor="let dia of dias">
+            <td><button class="btnDia" (click)="eligeDia(dia)">{{dia}}</button>
+            </td>
+          </tr>
+        </div>
+        <label for="" [hidden]="!auxHor">Seleccione un horario: {{turno.hora | horapipe}}</label>
+        <div class="container-fluid horario" [hidden]="!auxHor">
+          <tr *ngFor="let hora of horario">
+            <td><button class="btnHora" (click)="eligeHorario(hora)">{{hora | horapipe}}</button>
+            </td>
+          </tr>
+        </div>
+        <label for="" [hidden]="!auxHor">Turno Seleccionado: {{diaSeleccionado}} - {{horaSeleccionada | horapipe}}</label>
+        <br>
+        <button class="btnCargar" [hidden]="!auxHor" (click)="cargarTurno()">Cargar Turno</button>
+      </div>
+      <div class="col-md-3" [hidden]="!auxHor" *ngIf="viewPacientes">
+       <img src="{{usuario.foto1}}" alt="{{usuario.nombre}} {{usuario.apellido}}">
+       <br>
+       <p>{{usuario.nombre}} {{usuario.apellido}}</p>
+      </div>
+      <div class="col-md-3" [hidden]="!auxHor" *ngIf="!viewPacientes">
+        <app-seleccion-paciente (onSeleccionPaciente)="elegirPaciente($event)"></app-seleccion-paciente>
+      </div>
+    </div>
   </div>
 
-  
-  <footer class="pt-3 mt-4 text-muted border-top">
-    &copy; 2022 Cristian Barraza
-  </footer>
+</div>
+
+
+<footer class="pt-3 mt-4 text-muted border-top">
+  &copy; 2022 Cristian Barraza
+</footer>

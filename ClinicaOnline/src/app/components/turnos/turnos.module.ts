@@ -8,6 +8,11 @@ import { SolicitarTurnosComponent } from './solicitar/solicitar-turnos/solicitar
 import { ListadoTurnosComponent } from './listado-turnos/listado-turnos.component';
 import { TurnosPacientesComponent } from './turnos-pacientes/turnos-pacientes.component';
 import { TurnosEspecialistasComponent } from './turnos-especialistas/turnos-especialistas.component';
+import { SeleccionPacienteComponent } from './seleccion-paciente/seleccion-paciente.component';
+import { PacientesComponent } from './pacientes/pacientes.component';
+import { HistoriasComponent } from './historias/historias.component';
+import { FiltropipePipe } from './../../pipes/filtropipe.pipe';
+import { HorapipePipe } from './../../pipes/horapipe.pipe';
 
 
 
@@ -20,6 +25,11 @@ import { TurnosEspecialistasComponent } from './turnos-especialistas/turnos-espe
     ListadoTurnosComponent,
     TurnosPacientesComponent,
     TurnosEspecialistasComponent,
+    SeleccionPacienteComponent,
+    PacientesComponent,
+    HistoriasComponent,
+    FiltropipePipe,
+    HorapipePipe
   ],
   imports: [
     CommonModule,

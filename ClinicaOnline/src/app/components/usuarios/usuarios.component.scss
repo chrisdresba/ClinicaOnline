@@ -5,7 +5,7 @@
 
 #contenedor {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: #8e9eab;
     background: -webkit-linear-gradient(to top, #eef2f3, #8e9eab);
     background: linear-gradient(to top, #eef2f3, #8e9eab);
@@ -38,4 +38,29 @@ img{
 
 p{
     margin-top: 0.5em;
+}
+
+#setHistoria{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 10;
+    max-width:330px; 
+    max-height:450px;
+    margin-top: 6em;
+    background-color: #53a9f0;
+    border: 2px solid #52565a;
+    border-radius: 10px;
+    overflow: scroll;
+  }
+
+
+#btnCerrar{
+    width: 40px;
+    height: 40px;
+    background: #b4cde1;
+    margin-left: 290px;
 }

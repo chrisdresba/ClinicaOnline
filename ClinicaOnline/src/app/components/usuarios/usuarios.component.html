@@ -5,8 +5,25 @@
                 <div class="container-fluid py-3">
                     <div class="container">
                         <h1>Listado de usuarios</h1>
-                        <app-listado-usuarios [listadoPacientes]="listadoPacientes" [listadoEsp]="listadoEsp" 
-                        (especialistaSeleccionado)="tomarEspecialistaParaDetalles($event)">>
+                        <div class="d-flex justify-content-center spin" role="status" [hidden]="loadHistoria">
+                          <div class="" id="setHistoria" [hidden]="!loadHistoria" alt="ClinicaOnline">
+                              <button id="btnCerrar" (click)="cerrarHistoria()">X</button>
+                              <h5>Historia Clinica:</h5>
+                              <ul class="list-group mb-3 text-muted"  *ngFor="let hist of historia">
+                                  <li class="list-group-item d-flex">FECHA: {{hist.fecha}}</li>
+                                  <li class="list-group-item d-flex">ALTURA: {{hist.altura}} cm</li>
+                                  <li class="list-group-item d-flex">PESO: {{hist.peso}} kg</li>
+                                  <li class="list-group-item d-flex">PRESION: {{hist.presion}}</li>
+                                  <li class="list-group-item d-flex">TEMPERATURA:{{hist.temperatura}}</li>
+                                  <li class="list-group-item d-flex" *ngIf="hist.clave">{{hist.clave}} : {{hist.valor}}</li>
+                                  <li class="list-group-item d-flex" *ngIf="hist.clave1">{{hist.clave1}} : {{hist.valor1}}</li>
+                                  <li class="list-group-item d-flex" *ngIf="hist.clave2">{{hist.clave2}} : {{hist.valor2}}</li>
+                              </ul>
+                              <br>
+                          </div>
+                      </div>
+                        <app-listado-usuarios [listadoPacientes]="listadoPacientes" [listadoEsp]="listadoEsp" (pacienteDescarga)="tomarPacienteParaDescarga($event)"
+                        (especialistaSeleccionado)="tomarEspecialistaParaDetalles($event)"  (pacienteSeleccionado)="tomarPacienteParaDetalles($event)">
                         </app-listado-usuarios>
                         <button class="btnDescarga" (click)="descargarPacientes()">Descargar Pacientes Excel</button>
                         <button class="btnDescarga" (click)="descargarEspecialistas()">Descargar Especialistas Excel</button>
@@ -22,10 +39,10 @@
             <h2>Especialista</h2>
             <p>Nombre: {{nombre}}</p>
             <p>Apellido: {{apellido}} </p>
-            <p>Dni: {{dni}}</p>
+            <p>Dni: {{dni | dnipipe}}</p>
             <p>Especialidad: {{especialidad}}</p>
             <br>
-            <img src="{{urlImagen}}" alt="">
+            <img src="{{urlImagen}}" notImage alt="">
             <br>
             <br>
             <button class="w-100 btn btn-outline-success mb-1" *ngIf="!estadoEsp" type="button" (click)="habilitar()">Habilitar</button> <button class="w-100 btn btn-outline-danger wt-3" *ngIf="estadoEsp" type="button" (click)="inhabilitar()">Inhabilitar</button>

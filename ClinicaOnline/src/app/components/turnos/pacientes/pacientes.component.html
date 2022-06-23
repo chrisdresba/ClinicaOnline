@@ -1,0 +1,65 @@
+<div class="container py-4">
+  <header class="pb-3 mb-4 border-bottom">
+    <a class="d-flex align-items-center text-dark text-decoration-none">
+      <h2>PACIENTES</h2>
+    </a>
+
+  </header>
+
+  <div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+      <div id="container">
+        <div id="box">
+            <tr *ngFor="let pac of pacientesFiltro">
+              <td><img src="{{pac.foto1}}" title="{{pac.nombre}} {{pac.apellido}}" class=" btn-circle scale-in-center" (click)="eligePaciente(pac)"></td>
+            </tr>
+        </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="row align-items-md-stretch" *ngIf="estadoPaciente">
+    <div class="col-md-4">
+      <div class="h-100 p-5 text-white bg-dark rounded-3">
+        <h2>Detalle Paciente</h2>
+        <ul>
+          <li>Nombre: {{paciente.nombre}} {{paciente.apellido}}</li>
+          <li>Dni: {{paciente.dni}}</li>
+          <li>Edad: {{paciente.edad}}</li>
+          <li>Obra Social: {{paciente.obraSocial}}</li>
+          <li>Correo: {{paciente.mail}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="h-100 p-5 bg-light border rounded-3">
+        <h2>Turnos Paciente</h2>
+        <ul  *ngFor="let tur of turnosPaciente">
+          <li>Fecha: {{tur.fecha}}</li>
+          <li>Hora: {{tur.hora | horapipe}}</li>
+          <li>Estado: {{tur.estado}}</li>
+          <li>Especialidad: {{tur.especialidad}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="h-100 p-5 text-white bg-dark rounded-3">
+        <h2>Historia Clinica</h2>
+        <ul *ngFor="let hist of historiaPaciente">
+          <li>Fecha: {{hist.fecha}}</li>
+          <li>Altura: {{hist.altura}} cm</li>
+          <li>Peso: {{hist.peso}} kg</li>
+          <li>Presion: {{hist.presion}}</li>
+          <li>Temperatura:{{hist.temperatura}}°C</li>
+          <li *ngIf="hist.clave">{{hist.clave}} : {{hist.valor}}</li>
+          <li *ngIf="hist.clave1">{{hist.clave1}} : {{hist.valor1}}</li>
+          <li *ngIf="hist.clave2">{{hist.clave2}} : {{hist.valor2}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer class="pt-3 mt-4 text-muted border-top">
+    &copy; 2022 Cristian Barraza
+  </footer>
+</div>

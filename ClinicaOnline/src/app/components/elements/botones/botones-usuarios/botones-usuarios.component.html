@@ -1,15 +1,15 @@
 <div id="container">
     <div id="box">
         <tr *ngFor="let user of pacientes">
-            <td><img src="{{user.foto1}}" alt="" (click)="eligeUsuario(user)">
+            <td><img src="{{user.foto1}}" notImage alt="" (click)="eligeUsuario(user)">
             </td>
         </tr>
         <tr *ngFor="let user of especialistas">
-            <td><img src="{{user.foto1}}" alt="" (click)="eligeUsuario(user)">
+            <td><img src="{{user.foto1}}" notImage alt="" (click)="eligeUsuario(user)">
             </td>
         </tr>
         <tr *ngFor="let user of admin">
-            <td><img src="{{user.foto1}}" alt="" (click)="eligeUsuario(user)">
+            <td><img src="{{user.foto1}}" notImage alt="" (click)="eligeUsuario(user)">
             </td>
         </tr>
     </div>

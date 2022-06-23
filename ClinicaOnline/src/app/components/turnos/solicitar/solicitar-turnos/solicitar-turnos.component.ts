@@ -44,6 +44,7 @@ export class SolicitarTurnosComponent implements OnInit {
   especialista: any;
   especialistaSeleccionado: any[] = [];
   pacienteSeleccionado: any[] = [];
+  paciente: Paciente;
   dias: string[] = [];
   dia: string = '';
   horario: number[] = [];
@@ -51,9 +52,11 @@ export class SolicitarTurnosComponent implements OnInit {
   horaHasta?: number;
   diaSeleccionado: string = '';
   horaSeleccionada: string = '';
+  viewPacientes: boolean = false;
 
-  constructor(public serv: UsuariosService,public servTurno:TurnosService, public servEsp: EspecialidadesService, public servHor: HorariosEspecialistasService) {
+  constructor(public serv: UsuariosService, public servTurno: TurnosService, public servEsp: EspecialidadesService, public servHor: HorariosEspecialistasService) {
     this.turno = new Turnos();
+    this.paciente = new Paciente();
   }
 
   ngOnInit(): void {
@@ -63,8 +66,12 @@ export class SolicitarTurnosComponent implements OnInit {
       this.usuario = this.serv.traerUsuario(this.usuarioLog);
     }
 
-    this.pacienteSeleccionado.push(this.usuario.id);
-    this.pacienteSeleccionado.push(this.usuario.nombre + ' ' + this.usuario.apellido);
+    if (this.usuario.paciente) {
+      this.pacienteSeleccionado = [];
+      this.pacienteSeleccionado.push(this.usuario.id);
+      this.pacienteSeleccionado.push(this.usuario.nombre + ' ' + this.usuario.apellido);
+      this.viewPacientes = true;
+    }
 
     this.servEsp.getEspecialidades().subscribe(esp => {
       this.especialidades = esp;
@@ -96,22 +103,30 @@ export class SolicitarTurnosComponent implements OnInit {
         });
 
       } else {
-
-        this.turno.iniciarTurnos(this.diaSeleccionado, this.horaSeleccionada, this.pacienteSeleccionado, this.especialistaSeleccionado, this.especialidad);
-        this.servTurno.saveTurno(this.turno);
-        Swal.fire({
-          icon: 'success',
-          title: 'La turno fue creado con exito',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        if (this.pacienteSeleccionado.length == 0) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Debe elegir un paciente',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          this.turno.iniciarTurnos(this.diaSeleccionado, this.horaSeleccionada, this.pacienteSeleccionado[0],this.pacienteSeleccionado[1], this.especialistaSeleccionado[0],this.especialistaSeleccionado[1], this.especialidad);
+          this.servTurno.saveTurno(this.turno);
+          Swal.fire({
+            icon: 'success',
+            title: 'La turno fue creado con exito',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
 
       }
     } catch (error) {
       Swal.fire({
         icon: 'error',
         title: 'Error...',
-        text: 'El usuario o la contraseña son incorrectos!'
+        text: 'Sucedio un error en la carga!'
       })
 
     }
@@ -210,6 +225,11 @@ export class SolicitarTurnosComponent implements OnInit {
     return formato;
   }
 
-
+  elegirPaciente(pac: Paciente) {
+    this.paciente = pac;
+    this.pacienteSeleccionado = [];
+    this.pacienteSeleccionado.push(this.paciente.id);
+    this.pacienteSeleccionado.push(this.paciente.nombre + ' ' + this.paciente.apellido);
+  }
 
 }

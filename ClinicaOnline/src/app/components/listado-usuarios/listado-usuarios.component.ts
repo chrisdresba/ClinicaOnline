@@ -12,7 +12,9 @@ export class ListadoUsuariosComponent implements OnInit {
 
   
   @Output() public especialistaSeleccionado : EventEmitter<any> = new EventEmitter<Especialista>();
- @Input() public listadoPacientes? : Paciente[];
+  @Output() public pacienteSeleccionado : EventEmitter<any> = new EventEmitter<Paciente>();
+  @Output() public pacienteDescarga : EventEmitter<any> = new EventEmitter<Paciente>();
+  @Input() public listadoPacientes? : Paciente[];
   @Input() public listadoEsp? : Especialista[];
   constructor(public serv: UsuariosService) { 
    this.listadoPacientes = [];
@@ -25,6 +27,14 @@ export class ListadoUsuariosComponent implements OnInit {
 
   eligeEspecialista ( esp : Especialista ) {
     this.especialistaSeleccionado.emit( esp );
+  }
+
+  eligePaciente ( pac : Paciente ) {
+    this.pacienteSeleccionado.emit( pac );
+  }
+
+  descargaPaciente ( pac : Paciente ) {
+    this.pacienteDescarga.emit( pac );
   }
 
 }

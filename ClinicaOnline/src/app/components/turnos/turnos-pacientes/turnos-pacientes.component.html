@@ -2,10 +2,6 @@
     <header class="pb-3 mb-4 border-bottom">
       <div class="d-flex align-items-center text-dark text-decoration-none">
         <h2 class="fs-4">Listado de turnos</h2>
-        <div style="float: right;">
-          <input type="text">
-          <button>Buscar</button>
-        </div>
     </div>
     </header>
 
@@ -21,49 +17,55 @@
       <div class="col-md-6">
         <div class="h-100 p-5 text-white bg-dark rounded-3">
           <h2>Cancelar turno</h2>
+          <p>Especialidad: {{turno.especialidad}}</p>
           <label for="">Comentario:</label>
+          <div class="md-form">
+            <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="comentario"></textarea>
+          </div>
           <br>
-          <input type="text" placeholder="">
-          <br>
-          <button class="btn btn-outline-light" type="button" (click)="cancelarTurno()">Cancelar</button>
-          <button class="btn btn-outline-light" type="button" (click)="turnoact()">Cambiar</button>
+          <button class="btn btn-outline-danger" type="button" (click)="cancelarTurno()">Cancelar</button>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" *ngIf="estadoResenia">
         <div class="h-100 p-5 bg-light border rounded-3">
-          <h2>Turno</h2>
-          <p>Fecha: {{turno.fecha}}</p>
-          <p>Hora: {{turno.hora}}:00 </p>
-          <p>Especialidad: {{turno.especialidad}}</p>
-          <p>Estado: {{turno.estado}}</p>
-          <br>
+            <h2>Reseña</h2>
+            <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="resenia" readonly="true"></textarea>
         </div>
       </div>
     </div>
 
     <div class="row align-items-md-stretch" *ngIf="estadoTurno">
-      <div class="col-md-4">
+      <div class="col-md-4" *ngIf="estadoResenia">
         <div class="h-100 p-5 text-white bg-dark rounded-3">
           <h2>Reseña</h2>
-          <label for="">Comentario:</label>
-          <input type="text" placeholder="">
-          <button class="btn btn-outline-light" type="button">Example button</button>
-        </div>
+          <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="resenia" readonly="true"></textarea>
+      </div>
       </div>
       <div class="col-md-4">
-        <div class="h-100 p-5 text-white bg-dark rounded-3">
-          <h2>Completar encuesta</h2>
-          <label for="">Comentario:</label>
-          <input type="text" placeholder="">
-          <button class="btn btn-outline-light" type="button">Example button</button>
+        <div class="h-100 p-5 bg-light border rounded-3">
+          <h2>Encuesta</h2>
+          <label for="">Califique la atención recibida:</label>
+          <select name="tipo" [(ngModel)]="encuesta" style="width:250px;">
+            <option  value="Excelente">Excelente</option>
+            <option  value="Muy Buena">Muy Buena</option>
+            <option  value="Buena">Buena</option>
+            <option  value="Regular">Regular</option>
+            <option  value="Mala">Mala</option>
+          </select>
+            <br>
+            <br>
+            <button class="btn btn-outline-primary" type="button" (click)="encuestaTurno()">Enviar</button>
         </div>
       </div>
       <div class="col-md-4">
         <div class="h-100 p-5 text-white bg-dark rounded-3">
           <h2>Calificar atención</h2>
-          <label for="">Comentario:</label>
-          <input type="text" placeholder="">
-          <button class="btn btn-outline-light" type="button">Example button</button>
+          <label for="">Deje un comentario:</label>
+          <div class="md-form">
+            <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="calificacion"></textarea>
+          </div>
+          <br>
+          <button class="btn btn-outline-primary" type="button" (click)="calificarTurno()">Enviar</button>
         </div>
       </div>
     </div>

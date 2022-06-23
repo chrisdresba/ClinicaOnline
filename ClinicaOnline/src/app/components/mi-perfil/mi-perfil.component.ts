@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { Historia } from 'src/app/class/historia';
 import { Horarios } from 'src/app/class/horarios';
+import { Turnos } from 'src/app/class/turnos';
+import { GenerarPDFService } from 'src/app/services/generar-pdf.service';
 import { HorariosEspecialistasService } from 'src/app/services/horarios-especialistas.service';
+import { TurnosService } from 'src/app/services/turnos.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import Swal from 'sweetalert2';
 
@@ -20,11 +24,14 @@ export class MiPerfilComponent implements OnInit {
   edad?: number;
   load: boolean = false;
   loadAtencion: boolean = false;
+  loadHistoria: boolean = false;
   usuario: any;
   usuarioLog: any;
   urlImagen: string = '/assets/especialistaDefault.jpg';
   horaDesde: string = '';
   horaHasta: string = '';
+  historia:Historia[] = [];
+  turnos:Turnos[] = [];
   dias: string[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
   horarioDesde: string[] = ['8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
   horarioHasta: string[] = ['9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19'];
@@ -35,21 +42,37 @@ export class MiPerfilComponent implements OnInit {
   diaSabado: boolean = false;
   mostrarHorario: boolean = false;
 
-  constructor(public serv: UsuariosService, public servHorario: HorariosEspecialistasService) {
+  constructor(public serv: UsuariosService,public pdfService:GenerarPDFService, public servHorario: HorariosEspecialistasService,public service:TurnosService) {
     this.objHorario = new Horarios();
+
   }
 
-  ngOnInit(): void {
+  async ngOnInit(){
 
     const auth = getAuth();
     if (auth.currentUser != null) {
       this.usuarioLog = auth.currentUser;
       this.usuario = this.serv.traerUsuario(this.usuarioLog);
     }
+    if(this.usuario.paciente){
+      this.historia = await this.service.getHistoriaPaciente(this.usuario.id);
+    }
+  
+    if(this.usuario.especialista){
+      this.turnos = await this.service.getTurnosEspecialista(this.usuario.id);
+    }
   }
 
   configuracion() {
     this.loadAtencion = true;
+  }
+
+  getHistoria() {
+    this.loadHistoria = true;
+  }
+
+  cerrarHistoria() {
+    this.loadHistoria = false;
   }
 
   cerrarConfiguracion() {
@@ -92,6 +115,21 @@ export class MiPerfilComponent implements OnInit {
       }
     }
   }
+
+  async guardarHistoria(){
+    const nombre = this.usuario.nombre + " " + this.usuario.apellido;
+    const nombreDoc = this.usuario.mail + ".pdf";
+    this.pdfService.crearPDFHistoria( nombreDoc,nombre, this.historia );
+    return
+  }
+
+  async guardarTurnos(){
+    const nombre = this.usuario.nombre + " " + this.usuario.apellido;
+    const nombreDoc = this.usuario.mail + ".pdf";
+    this.pdfService.crearPDFTurnos( nombreDoc,nombre, this.turnos );
+    return
+  }
+
 
   limpiarForm(){
     this.dia='';

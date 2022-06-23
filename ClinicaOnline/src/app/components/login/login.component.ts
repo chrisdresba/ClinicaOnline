@@ -68,9 +68,8 @@ export class LoginComponent implements OnInit {
       if (this.validarEmail(this.email!) && this.validarContraseña(this.password!)) {
         this.load = true;
         this.afAuth.signInWithEmailAndPassword(this.email!, this.password!).then(res => {
-          if (this.servUsuario.userAdmin(this.email!)) {
-            this.sesion.logAdmin();
-          }
+          this.guardarLog(this.email!);
+          this.servUsuario.ingresoUsuario(this.email!);
             setTimeout(() => { this.router.navigate(['/home']) }, 3000)
 
         }, err => {
@@ -120,6 +119,21 @@ export class LoginComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  guardarLog(usuario: any) {
+
+    var res = new Date();
+    let fecha = res.getDate() + "/" + (res.getMonth() + 1) + "/" + res.getFullYear();
+    let hora = res.getHours() + ":"+ res.getMinutes() + ":"+ res.getSeconds();
+
+    let log = {
+      'usuario': usuario,
+      'fechaIngreso': fecha,
+      'hora': hora
+    }
+
+    this.database.crearDatos(log);
   }
 
 }

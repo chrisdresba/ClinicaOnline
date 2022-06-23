@@ -29,7 +29,7 @@
                                             class="text-danger">
                                             *</span>
                                         <input type="text" class="form-control" formControlName="nombre" name="nombre"
-                                            placeholder="Nombre" value="" />
+                                            placeholder="Nombre" value="" soloLetras/>
                                     </div>
                                     <div class="form-group">
                                         <label class="fuente" for="nombre">Apellido</label>
@@ -37,23 +37,23 @@
                                             class="text-danger">
                                             *</span>
                                         <input type="text" class="form-control" formControlName="apellido"
-                                            name="apellido" placeholder="Apellido" value="" />
+                                            name="apellido" placeholder="Apellido" value="" soloLetras/>
                                     </div>
                                     <div class="form-group">
                                         <label class="fuente" for="nombre">Edad</label>
                                         <span *ngIf="this.formulario.get('edad')?.hasError('required')"
                                             class="text-danger">
                                             *</span>
-                                        <input type="number" class="form-control" formControlName="edad" name="edad"
-                                            placeholder="Edad" value="" />
+                                        <input type="text" class="form-control" formControlName="edad" name="edad"
+                                            placeholder="Edad" value="" soloNumeros/>
                                     </div>
                                     <div class="form-group">
                                         <label class="fuente" for="nombre">Dni</label>
                                         <span *ngIf="this.formulario.get('dni')?.hasError('required')"
                                             class="text-danger">
                                             *</span>
-                                        <input type="number" class="form-control" formControlName="dni" name="dni"
-                                            placeholder="Dni" value="" />
+                                        <input type="text" class="form-control" formControlName="dni" name="dni"
+                                            placeholder="Dni" value="" soloNumeros/>
                                     </div>
                                     <div class="form-group">
                                         <label class="fuente" for="nombre">Obra Social</label>
@@ -111,7 +111,7 @@
                                         class="text-danger">
                                         *</span>
                                     <input type="text" class="form-control" formControlName="nombre" name="nombre"
-                                        placeholder="Nombre" value="" />
+                                        placeholder="Nombre" value="" soloLetras/>
                                 </div>
                                 <div class="form-group">
                                     <label class="fuente" for="nombre">Apellido</label>
@@ -119,14 +119,14 @@
                                         class="text-danger">
                                         *</span>
                                     <input type="text" class="form-control" formControlName="apellido" name="apellido"
-                                        placeholder="Apellido" value="" />
+                                        placeholder="Apellido" value="" soloLetras/>
                                 </div>
                                 <div class="form-group">
                                     <label class="fuente" for="nombre">Edad</label>
                                     <span *ngIf="this.formulario.get('edad')?.hasError('required')" class="text-danger">
                                         *</span>
-                                    <input type="number" class="form-control" formControlName="edad" name="edad"
-                                        placeholder="Edad" value="" />
+                                    <input type="text" class="form-control" formControlName="edad" name="edad"
+                                        placeholder="Edad" value="" soloNumeros/>
                                 </div>
                                 <br>
                                 <div id="listado-especialistas">
@@ -156,8 +156,8 @@
                                     <label class="fuente" for="nombre">Dni</label>
                                     <span *ngIf="this.formulario.get('dni')?.hasError('required')" class="text-danger">
                                         *</span>
-                                    <input type="number" class="form-control" formControlName="dni" name="dni"
-                                        placeholder="Dni" value="" />
+                                    <input type="text" class="form-control" formControlName="dni" name="dni"
+                                        placeholder="Dni" value="" soloNumeros/>
                                 </div>
                                 <div class="form-group">
                                     <label class="fuente" for="nombre">Correo electrónico</label>
@@ -198,7 +198,7 @@
                                         class="text-danger">
                                         *</span>
                                     <input type="text" class="form-control" formControlName="nombre" name="nombre"
-                                        placeholder="Nombre" value="" />
+                                        placeholder="Nombre" value="" soloLetras/>
                                 </div>
                                 <div class="form-group">
                                     <label class="fuente" for="nombre">Apellido</label>
@@ -206,21 +206,21 @@
                                         class="text-danger">
                                         *</span>
                                     <input type="text" class="form-control" formControlName="apellido" name="apellido"
-                                        placeholder="Apellido" value="" />
+                                        placeholder="Apellido" value="" soloLetras/>
                                 </div>
                                 <div class="form-group">
                                     <label class="fuente" for="nombre">Edad</label>
                                     <span *ngIf="this.formulario.get('edad')?.hasError('required')" class="text-danger">
                                         *</span>
-                                    <input type="number" class="form-control" formControlName="edad" name="edad"
-                                        placeholder="Edad" value="" />
+                                    <input type="text" class="form-control" formControlName="edad" name="edad"
+                                        placeholder="Edad" value="" soloNumeros/>
                                 </div>
                                 <div class="form-group">
                                     <label class="fuente" for="nombre">Dni</label>
                                     <span *ngIf="this.formulario.get('dni')?.hasError('required')" class="text-danger">
                                         *</span>
-                                    <input type="number" class="form-control" formControlName="dni" name="dni"
-                                        placeholder="Dni" value="" />
+                                    <input type="text" class="form-control" formControlName="dni" name="dni"
+                                        placeholder="Dni" value="" soloNumeros/>
                                 </div>
 
                             </div>

@@ -6,6 +6,7 @@ import { Administrador } from '../class/administrador';
 import { Especialista } from '../class/especialista';
 import { Horarios } from '../class/horarios';
 import { Paciente } from '../class/paciente';
+import { SesionService } from './sesion.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,10 @@ export class UsuariosService {
 
   listado: any[] = [];
 
-  listadoPacientes : any[] = [];
-  listadoEspecialistas : any[] = [];
+  listadoPacientes: any[] = [];
+  listadoEspecialistas: any[] = [];
 
-  constructor(private firestore: AngularFirestore) {
+  constructor(private firestore: AngularFirestore, public sesion: SesionService) {
     this.getAdministradores().subscribe(usuario => {
       this.listado = usuario;
     })
@@ -55,22 +56,6 @@ export class UsuariosService {
     );
   }
 
-  createDoc(data: any, path: string, id: string) {
-    const collection = this.firestore.collection(path);
-    return collection.doc(id).set(data);
-  }
-
-  getDoc(path: string, id: string) {
-    return this.firestore.collection(path).doc(id).valueChanges();
-  }
-
-  getDatosUserAdmin(uid: string) {
-    const path = 'administradores';
-    const id = uid;
-    this.getDoc(path, id).subscribe(res => {
-    })
-  }
-
   userAdmin(mail: string) {
     for (let i = 0; i < this.listado.length; i++) {
       if (this.listado[i].mail == mail) {
@@ -81,25 +66,25 @@ export class UsuariosService {
   }
 
   async savePaciente(res: Paciente) {
-    let entidad = { 'id':res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'obraSocial': res.obraSocial, 'mail': res.mail, 'foto1': res.foto1, 'foto2': res.foto2, 'paciente': res.paciente }
+    let entidad = { 'id': res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'obraSocial': res.obraSocial, 'mail': res.mail, 'foto1': res.foto1, 'foto2': res.foto2, 'paciente': res.paciente }
     return await this.firestore.collection('pacientes').doc(res.id).set(entidad);
   }
 
   async saveEspecialista(res: Especialista) {
-    let entidad = { 'id':res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'especialidad': res.especialidad, 'mail': res.mail, 'foto1': res.foto1, 'especialista': res.especialista, 'estado':false,'horario':res.horario }
+    let entidad = { 'id': res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'especialidad': res.especialidad, 'mail': res.mail, 'foto1': res.foto1, 'especialista': res.especialista, 'estado': false, 'horario': res.horario }
     return await this.firestore.collection('especialistas').doc(res.id).set(entidad);
   }
 
   async saveAdmin(res: Administrador) {
-    let entidad = { 'id':res.id,'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'mail': res.mail, 'foto1': res.foto1, 'admin': res.admin }
+    let entidad = { 'id': res.id, 'nombre': res.nombre, 'apellido': res.apellido, 'edad': res.edad, 'dni': res.dni, 'mail': res.mail, 'foto1': res.foto1, 'admin': res.admin }
     return await this.firestore.collection('administradores').doc(res.id).set(entidad);
   }
 
-  actualizarEspecialista ( res: Especialista ) {
-    return this.firestore.collection( 'especialistas' ).doc(res.id).update ( {...res} );
+  actualizarEspecialista(res: Especialista) {
+    return this.firestore.collection('especialistas').doc(res.id).update({ ...res });
   }
 
-  traerUsuario ( res: any ) {
+  traerUsuario(res: any) {
     for (let i = 0; i < this.listado.length; i++) {
       if (this.listado[i].id == res.uid) {
         return this.listado[i];
@@ -117,6 +102,38 @@ export class UsuariosService {
         return this.listadoEspecialistas[i];
       }
     }
+  }
+
+  ingresoUsuario(email: string) {
+    for (let i = 0; i < this.listado.length; i++) {
+      if (this.listado[i].mail == email) {
+        this.sesion.sesionAdmin = true;
+        break;
+      }
+    }
+
+    for (let i = 0; i < this.listadoEspecialistas.length; i++) {
+      if (this.listadoEspecialistas[i].mail == email) {
+        this.sesion.sesionEspecialista = true;
+        break;;
+      }
+    }
+
+    for (let i = 0; i < this.listadoPacientes.length; i++) {
+      if (this.listadoPacientes[i].mail == email) {
+        this.sesion.sesionPaciente = true;
+        break;
+      }
+    }
+
+  }
+
+  getPaciente ( paciente? : any ) {
+    return this.firestore.collection('pacientes').ref.where( "id", "==", paciente ).get().then( snapshots => snapshots.docs.map( doc => {
+              const ret : any = doc.data();
+              ret.id = doc.id;
+              return ret;
+            } ) ); 
   }
 
 }

@@ -1,17 +1,17 @@
 <div id="container">
     <div class="row col-lg-12" id="box" [hidden]="inicio">
         <div class="col-lg-6">
-            <img src="./../../../assets/paciente.png" alt="" class="img-usuarios" (click)="setPaciente()">
+            <img src="./../../../assets/paciente.png" notImage alt="" title="PACIENTES" class="img-usuarios" (click)="setPaciente()">
         </div>
         <div class="col-lg-6">
-            <img src="./../../../assets/especialista.png" alt="" class="img-usuarios" (click)="setEspecialista()">
+            <img src="./../../../assets/especialista.png" notImage alt="" title="ESPECIALISTAS" class="img-usuarios" (click)="setEspecialista()">
         </div>
     </div>
     <div class="register" [hidden]="!inicio">
         <div class="row">
             <div class="col-md-3 register-left">
                 <h3>Clinica Online</h3>
-                <img src="./../../../assets/registro.png" alt="" class="img-registro" />
+                <img src="./../../../assets/registro.png" notImage alt="" class="img-registro" />
             </div>
             <div class="col-md-9 register-right">
                 <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">

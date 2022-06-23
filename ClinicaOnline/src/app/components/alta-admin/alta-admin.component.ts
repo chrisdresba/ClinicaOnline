@@ -111,9 +111,6 @@ export class AltaAdminComponent implements OnInit {
       const mail = this.formulario.value.mail;
       const edad = this.formulario.value.edad;
       const password = this.formulario.value.password;
-      console.log(nombre + apellido + edad + dni + obraSocial + mail + password)
-      console.log(foto1)
-      console.log(foto2)
 
       if (
         !nombre ||

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, signOut } from "firebase/auth";
+import { SesionService } from 'src/app/services/sesion.service';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-nav',
@@ -14,7 +16,7 @@ export class NavComponent implements OnInit {
   accion: any;
   public auth: boolean = false;
 
-  constructor(public router: Router, public afAuth: AngularFireAuth) { }
+  constructor(public router: Router, public afAuth: AngularFireAuth,public servSesion:SesionService) { }
 
   ngOnInit(): void {
     this.usuario = this.afAuth.onAuthStateChanged(user => {
@@ -38,10 +40,17 @@ export class NavComponent implements OnInit {
     signOut(auth).then(() => {
       localStorage.removeItem('perfilAdmin')
       this.auth = false;
+      this.limpiar();
       this.router.navigate(['/home']);
     }).catch((error) => {
 
     });
+  }
+
+  limpiar(){
+    this.servSesion.sesionAdmin = false;
+    this.servSesion.sesionEspecialista = false;
+    this.servSesion.sesionPaciente = false;
   }
 
 }

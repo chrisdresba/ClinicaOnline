@@ -21,13 +21,17 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/turnos/solicitar">Solicitar turnos</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/turnos/pacientes">Pacientes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/informes">Informes</a>
+          </li>
           <li class="nav-item" *ngIf="auth">
             <a class="nav-link" routerLink="/miperfil">Mi perfil</a>
           </li>
         </ul>
         <form class="d-flex">
-          <input class="form-control me-1" type="search" placeholder="¿Que estás buscando?" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Buscar</button>
           <button class="btn" *ngIf="!auth" (click)="sesion()" class="btnIngresar">Ingresar</button>
           <button class="btn" *ngIf="auth" (click)="cerrarSesion()" class="btnIngresar">Cerrar</button>
         </form>
